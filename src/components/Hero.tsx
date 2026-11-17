@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { ArrowRight, Code2, Command } from 'lucide-react';
+import { ArrowRight, Command, Network } from 'lucide-react';
 import { PROFILE } from '../data/portfolioData';
 
 interface HeroProps {
@@ -177,7 +177,7 @@ export const Hero: React.FC<HeroProps> = ({
             transition={fadeUpTransition(1)}
             className="mb-4 flex flex-wrap items-center gap-2 text-sm font-semibold text-[var(--action)]"
           >
-            <Code2 className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <Network className="h-4 w-4 shrink-0" aria-hidden="true" />
             <span>{PROFILE.headlineRole}</span>
             <span aria-hidden="true" className="text-[var(--muted)]">
               ·
@@ -217,7 +217,7 @@ export const Hero: React.FC<HeroProps> = ({
             transition={fadeUpTransition(3)}
             className="mt-4 flex min-h-[2.2em] flex-wrap items-baseline gap-1.5 text-sm font-semibold text-[var(--text)] sm:text-base"
           >
-            <span>Fokus pengerjaan:</span>
+            <span>Yang sering saya kerjakan:</span>
             <AnimatePresence mode="wait">
               <motion.span
                 key={rotorIdx}
@@ -373,7 +373,7 @@ export const Hero: React.FC<HeroProps> = ({
                   Nasution
                 </p>
                 <p className="mt-1.5 text-[11px] font-medium leading-snug text-[#5f6368]">
-                  Teknik Jaringan &amp; Komputer
+                  Teknik Komputer &amp; Jaringan
                 </p>
                 <div aria-hidden="true" className="mt-2.5 flex gap-1.5">
                   {ROTOR_COLORS.map((c) => (
@@ -470,10 +470,10 @@ export const Hero: React.FC<HeroProps> = ({
                       </span>
                     </div>
                     <span className="mt-3 text-xs font-semibold text-[var(--muted)]">
-                      Web Developer
+                      Siswa TKJ
                     </span>
                     <span className="mt-0.5 text-[11px] text-[var(--muted)]">
-                      SMK Madinatul Quran · TKJ
+                      {PROFILE.school}
                     </span>
                   </div>
                 )}

@@ -46,7 +46,7 @@ export const GdgDeveloperCard: React.FC = () => {
             </svg>
             <span>{PROFILE.school} · TKJ</span>
           </div>
-          <span className="font-mono text-[11px] font-semibold text-[var(--muted)]">DEV PASS</span>
+          <span className="font-mono text-[11px] font-semibold text-[var(--muted)]">TKJ PASS</span>
         </div>
       </div>
 
@@ -68,7 +68,9 @@ export const GdgDeveloperCard: React.FC = () => {
               exit={shouldReduceMotion ? undefined : { opacity: 0, y: -6 }}
               transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.18 }}
             >
-              <p className="text-xs font-semibold text-[var(--action)]">{PROFILE.headlineRole}</p>
+              <p className="text-xs font-semibold text-[var(--action)]">
+                Pelajar Teknik Komputer &amp; Jaringan
+              </p>
               <h3 className="mt-1 text-xl font-extrabold tracking-tight text-[var(--text)]">
                 {PROFILE.name}
               </h3>
@@ -81,13 +83,13 @@ export const GdgDeveloperCard: React.FC = () => {
                 <div className="flex items-baseline justify-between gap-3">
                   <dt className="text-[var(--muted)]">Jurusan</dt>
                   <dd className="text-right font-semibold text-[var(--text)]">
-                    Teknik Jaringan &amp; Komputer (TKJ)
+                    Teknik Komputer &amp; Jaringan
                   </dd>
                 </div>
                 <div className="flex items-baseline justify-between gap-3">
-                  <dt className="text-[var(--muted)]">Fokus</dt>
+                  <dt className="text-[var(--muted)]">Minat Lain</dt>
                   <dd className="text-right font-semibold text-[var(--text)]">
-                    Web Dev &amp; UI/UX
+                    UI/UX (Figma) &amp; Website
                   </dd>
                 </div>
               </dl>
@@ -100,9 +102,11 @@ export const GdgDeveloperCard: React.FC = () => {
               exit={shouldReduceMotion ? undefined : { opacity: 0, y: -6 }}
               transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.18 }}
             >
-              <p className="text-xs font-semibold text-[var(--action)]">Fokus &amp; Kontak Cepat</p>
+              <p className="text-xs font-semibold text-[var(--action)]">
+                Fokus Praktik &amp; Kontak
+              </p>
               <p className="mt-1.5 text-xs leading-relaxed text-[var(--muted)]">
-                React · TypeScript · Figma · MikroTik &amp; Linux
+                MikroTik · Cisco Packet Tracer · Linux Debian 12 · Figma
               </p>
 
               <div className="mt-4 space-y-2.5 border-t border-[var(--line)] pt-4 text-xs">

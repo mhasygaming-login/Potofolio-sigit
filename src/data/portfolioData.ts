@@ -69,21 +69,21 @@ export const PROFILE = {
   name: 'Sigit Hasyim Nasution',
   shortMark: 'SH',
   school: 'SMK Madinatul Quran',
-  major: 'Teknik Jaringan & Komputer (TKJ)',
-  headlineRole: 'Web Developer',
-  supportingRole: 'UI/UX Design (Figma) & Latar Belakang Jaringan TKJ',
+  major: 'Teknik Komputer dan Jaringan (TKJ)',
+  headlineRole: 'Siswa TKJ (Teknik Komputer & Jaringan)',
+  supportingRole: 'Hobi Desain UI/UX (Figma) & Pembuatan Website',
   heroSummary:
-    'Saya fokus membangun aplikasi web yang terstruktur dan mudah dipakai, didukung kemampuan merancang antarmuka di Figma serta pemahaman dasar jaringan dan keamanan dari jurusan TKJ.',
+    'Pelajar SMK Madinatul Quran jurusan Teknik Komputer dan Jaringan (TKJ) yang terbiasa mengonfigurasi jaringan di MikroTik, Cisco Packet Tracer, dan Linux Debian 12. Di luar materi jaringan, saya senang mendesain tampilan di Figma lalu mengembangkannya menjadi website.',
   focusLines: [
-    'aplikasi web dengan React dan TypeScript',
-    'desain antarmuka dan alur pengguna di Figma',
-    'penyimpanan local-first yang menghargai privasi',
-    'jaringan dasar MikroTik dan sistem Linux',
+    'konfigurasi router dan jaringan di MikroTik',
+    'simulasi topologi jaringan di Cisco Packet Tracer',
+    'administrasi server dasar di Linux Debian 12',
+    'desain antarmuka di Figma sebelum membuat website',
   ],
   aboutParagraphs: [
-    'Saya merupakan siswa SMK Madinatul Quran jurusan Teknik Jaringan & Komputer (TKJ). Di kelas, saya terbiasa mempraktikkan konfigurasi jaringan menggunakan MikroTik, administrasi dasar Linux, dan prinsip keamanan sistem.',
-    'Di luar jam pelajaran, fokus utama saya berkembang ke Web Development. Saya membangun antarmuka web modern, merancang tata letaknya terlebih dahulu di Figma, lalu mengimplementasikannya menjadi aplikasi yang responsif dan mudah diakses.',
-    'Melalui berbagai proyek mandiri dan pelatihan analitik data, saya terus mengasah standar penulisan kode yang rapi, keterbacaan antarmuka, dan penerapan AI secara bertanggung jawab.',
+    'Saya adalah siswa SMK Madinatul Quran jurusan Teknik Komputer dan Jaringan (TKJ). Kegiatan belajar saya sehari-hari berfokus pada jaringan komputer, mulai dari mengatur router MikroTik, merancang simulasi topologi di Cisco Packet Tracer, sampai mengelola sistem dasar menggunakan Linux Debian 12.',
+    'Di sekolah, saya juga mendapatkan pelajaran UI dan UX. Karena itu, setiap kali ingin membuat website, saya terbiasa merancang tampilannya terlebih dahulu di Figma supaya tata letak dan alurnya rapi sebelum mulai membuat kode.',
+    'Saya bukan seorang developer ahli, melainkan pelajar TKJ yang hobi membuat website sebagai sarana latihan dan mencoba hal baru di luar jam praktik jaringan.',
   ],
   email: 'mhasy.gaming@gmail.com',
   instagram: {
@@ -94,58 +94,58 @@ export const PROFILE = {
 
 export const SKILL_GROUPS: SkillGroup[] = [
   {
-    id: 'web-dev',
-    title: 'Web Development',
-    roleTag: 'Utama',
+    id: 'tkj-network',
+    title: 'Jaringan & Sistem (TKJ)',
+    roleTag: 'Fokus Utama',
     accent: 'blue',
     items: [
       {
-        name: 'HTML, CSS & Tailwind CSS',
-        detail: 'Layout responsif, semantik HTML & tema terang/gelap.',
+        name: 'MikroTik',
+        detail: 'Konfigurasi routing dasar, DHCP, NAT, firewall, dan manajemen bandwidth.',
       },
       {
-        name: 'JavaScript & TypeScript',
-        detail: 'State klien, validasi input & tipe data.',
+        name: 'Cisco Packet Tracer',
+        detail: 'Simulasi topologi jaringan, pembagian subnet IP, serta pengaturan VLAN.',
       },
       {
-        name: 'React & Vite',
-        detail: 'Komponen modular & penyimpanan local-first.',
+        name: 'Linux Debian 12',
+        detail: 'Pengoperasian CLI, pengaturan jaringan dasar, hak akses file, dan layanan server.',
       },
     ],
   },
   {
     id: 'ui-ux',
     title: 'UI/UX Design',
-    roleTag: 'Pendukung',
+    roleTag: 'Pelajaran Sekolah',
     accent: 'red',
     items: [
       {
         name: 'Figma',
-        detail: 'Wireframe, user flow & prototipe antarmuka.',
+        detail: 'Merancang wireframe, tata letak halaman, dan alur pengguna sebelum coding.',
       },
       {
-        name: 'Keterbacaan & Aksesibilitas',
-        detail: 'Hirarki tipografi, kontras WCAG AA & fokus keyboard.',
+        name: 'Kerapian & Keterbacaan',
+        detail: 'Menjaga ukuran teks, jarak antar bagian, serta kontras warna agar nyaman dilihat.',
       },
     ],
   },
   {
-    id: 'tkj-network',
-    title: 'Jaringan TKJ',
-    roleTag: 'Nilai Tambah',
+    id: 'web-dev',
+    title: 'Pembuatan Website',
+    roleTag: 'Minat & Latihan',
     accent: 'yellow',
     items: [
       {
-        name: 'MikroTik',
-        detail: 'DHCP, NAT, DNS, VLAN & static routing.',
+        name: 'HTML, CSS & Tailwind CSS',
+        detail: 'Menerapkan desain dari Figma menjadi halaman web yang rapi di desktop dan HP.',
       },
       {
-        name: 'Linux',
-        detail: 'CLI, permission file & jaringan dasar.',
+        name: 'JavaScript, React & TypeScript',
+        detail: 'Mempelajari pembuatan komponen dan logika interaktif lewat proyek latihan.',
       },
       {
-        name: 'Keamanan Dasar Web',
-        detail: 'Pemisahan API key & privasi data klien.',
+        name: 'Google AI Studio',
+        detail: 'Digunakan sebagai alat bantu belajar dan penyusunan prototipe awal website.',
       },
     ],
   },
@@ -153,20 +153,20 @@ export const SKILL_GROUPS: SkillGroup[] = [
 
 export const TOOLS_AND_PLATFORMS = [
   {
-    category: 'Version Control',
-    name: 'Git & GitHub',
+    category: 'Jaringan & Simulasi',
+    name: 'MikroTik & Cisco Packet Tracer',
   },
   {
-    category: 'Deployment',
-    name: 'Vercel',
+    category: 'Sistem Operasi',
+    name: 'Linux Debian 12',
   },
   {
-    category: 'AI Prototyping',
-    name: 'Google AI Studio & Gemini',
-  },
-  {
-    category: 'Desain',
+    category: 'Desain UI/UX',
     name: 'Figma',
+  },
+  {
+    category: 'Kode & Hosting',
+    name: 'GitHub & Vercel',
   },
 ];
 
@@ -360,7 +360,7 @@ export const PROJECTS: ProjectItem[] = [
       ],
     },
     myRole: {
-      roleTitle: 'Perancang Informasi & Web Developer',
+      roleTitle: 'Perancang Tampilan & Pembuatan Web',
       doneByMe: [
         'Menyusun struktur dashboard, kategori sektor, dan halaman edukasi.',
         'Mengonversi data referensi terbuka menjadi file JSON dan komponen grafik.',

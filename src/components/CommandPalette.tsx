@@ -73,9 +73,9 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       {
         id: 'nav-skill',
         group: 'Navigasi Bagian',
-        label: 'Keahlian & Tools',
+        label: 'Keahlian & Perangkat',
         hint: '#skill',
-        keywords: 'keahlian skill react typescript figma mikrotik linux vercel',
+        keywords: 'keahlian skill tkj mikrotik cisco packet tracer linux debian 12 figma react',
         icon: Layers,
         action: () => {
           onClose();

@@ -7,8 +7,8 @@ import {
   Instagram,
   Layers,
   Mail,
+  Network,
   Palette,
-  Shield,
   X,
 } from 'lucide-react';
 import {
@@ -228,11 +228,11 @@ export default function App() {
               <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-3">
                 {SKILL_GROUPS.map((group) => {
                   const Icon =
-                    group.id === 'web-dev'
-                      ? Layers
+                    group.id === 'tkj-network'
+                      ? Network
                       : group.id === 'ui-ux'
                         ? Palette
-                        : Shield;
+                        : Layers;
 
                   return (
                     <article key={group.id} className="relative pt-5">
@@ -288,8 +288,8 @@ export default function App() {
                 <div>
                   <SectionHeading title="Project & Studi Kasus" color={ACCENT_MAP.yellow} />
                   <p className="max-w-[54ch] text-sm text-[var(--muted)] sm:text-base">
-                    Proyek web utama dan eksperimen pilihan. Geser kartu untuk melihat tampilan dan
-                    ringkasan solusinya.
+                    Kumpulan website latihan yang saya rancang terlebih dahulu di Figma lalu saya
+                    bangun sebagai sarana belajar di luar materi jaringan.
                   </p>
                 </div>
 
@@ -427,8 +427,9 @@ export default function App() {
               <div className="md:col-span-5">
                 <SectionHeading title="Mari terhubung" color={ACCENT_MAP.blue} />
                 <p className="max-w-[44ch] text-sm leading-relaxed text-[var(--muted)] sm:text-base">
-                  Terbuka untuk diskusi proyek web development, desain UI/UX, atau kolaborasi belajar.
-                  Seluruh jalur di samping aktif dan terhubung langsung.
+                  Terbuka untuk berdiskusi seputar jaringan komputer, desain UI/UX di Figma, maupun
+                  latihan pembuatan website. Anda dapat menghubungi saya langsung melalui email atau
+                  Instagram di samping.
                 </p>
               </div>
 
