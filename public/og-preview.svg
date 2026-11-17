@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#F8FAFC"/>
+  <rect x="48" y="48" width="1104" height="534" rx="32" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="2"/>
+
+  <!-- Left geometric chevron mark -->
+  <g transform="translate(110, 175)">
+    <path d="M52 24 L10 92" stroke="#4285F4" stroke-width="16" stroke-linecap="round"/>
+    <path d="M10 92 L52 160" stroke="#EA4335" stroke-width="16" stroke-linecap="round"/>
+    <path d="M148 24 L190 92" stroke="#FBBC04" stroke-width="16" stroke-linecap="round"/>
+    <path d="M190 92 L148 160" stroke="#34A853" stroke-width="16" stroke-linecap="round"/>
+    <rect x="64" y="40" width="72" height="104" rx="18" fill="#F1F5F9"/>
+    <text x="100" y="106" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="800" font-size="36" fill="#1E293B">SH</text>
+  </g>
+
+  <!-- Brand & Copy -->
+  <text x="360" y="210" font-family="system-ui, sans-serif" font-weight="700" font-size="22" fill="#1A73E8">PORTOFOLIO RESMI</text>
+  <text x="360" y="278" font-family="system-ui, sans-serif" font-weight="800" font-size="58" fill="#0F172A">Sigit Hasyim Nasution</text>
+  <text x="360" y="338" font-family="system-ui, sans-serif" font-weight="600" font-size="28" fill="#475569">Web Developer · UI/UX Design · Fondasi TKJ</text>
+  <text x="360" y="405" font-family="system-ui, sans-serif" font-weight="400" font-size="22" fill="#64748B">Studi kasus aplikasi web, arsitektur local-first, dan peran teknis yang terukur.</text>
+
+  <!-- Bottom 4-color accent bar -->
+  <rect x="360" y="476" width="160" height="8" rx="4" fill="#4285F4"/>
+  <rect x="532" y="476" width="160" height="8" rx="4" fill="#EA4335"/>
+  <rect x="704" y="476" width="160" height="8" rx="4" fill="#FBBC04"/>
+  <rect x="876" y="476" width="160" height="8" rx="4" fill="#34A853"/>
+</svg>

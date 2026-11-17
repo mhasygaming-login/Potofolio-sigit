@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 14 8 32' stroke='%234285f4'/%3E%3Cpath d='M8 32 22 50' stroke='%23ea4335'/%3E%3Cpath d='M42 14 56 32' stroke='%23fbbc04'/%3E%3Cpath d='M56 32 42 50' stroke='%2334a853'/%3E%3C/g%3E%3C/svg%3E" rel="icon"/>
+<title>Sigit Hasyim Nasution | Portfolio</title>
+<meta content="Portofolio Sigit Hasyim Nasution: web development, UI/UX, game development, dashboard data, jaringan, dan keamanan." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&amp;display=block" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#ffffff; --surface:#f3f6fb; --text:#1f1f1f; --muted:#555a62; --line:#dde2ea;
+  --action:#1a73e8; --on-action:#ffffff;
+  --blue:#4285f4; --red:#ea4335; --yellow:#fbbc04; --green:#34a853;
+  --ease-standard:cubic-bezier(0.2,0,0,1);
+  --ease-decel:cubic-bezier(0.05,0.7,0.1,1);
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){
+  :root{ --bg:#121317; --surface:#1b1d23; --text:#f1f3f4; --muted:#a9aeb6; --line:#2d3038; --action:#8ab4f8; --on-action:#14213d; }
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--action);outline-offset:3px;border-radius:6px}
+.wrap{width:min(1120px,calc(100% - 40px));margin-inline:auto}
+h2{font-size:clamp(1.7rem,3.6vw,2.4rem);font-weight:800;letter-spacing:-0.025em;line-height:1.15}
+h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+.block{padding:clamp(56px,9vw,112px) 0}
+.flush{padding-top:0}
+.rule{border-top:1px solid var(--line)}
+
+/* header */
+.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{font-weight:800;text-decoration:none;letter-spacing:-0.01em}
+.menu{display:flex;gap:26px;font-size:.95rem;font-weight:500}
+.menu a{text-decoration:none;color:var(--muted);transition:color .3s var(--ease-standard)}
+.menu a:hover{color:var(--text)}
+.menu a[aria-current]{color:var(--text);text-decoration:underline;text-decoration-color:var(--action);text-decoration-thickness:2px;text-underline-offset:8px}
+.prog{position:absolute;left:0;right:0;bottom:-1px;height:3px;display:flex;pointer-events:none}
+.prog i{flex:1;background:var(--c);transform-origin:left;transform:scaleX(var(--p,0))}
+.menu .ms{display:none}
+@media (max-width:760px){
+  .top{backdrop-filter:none;background:var(--bg)}
+  .menu{position:fixed;left:0;right:0;bottom:0;z-index:20;gap:0;background:var(--bg);border-top:1px solid var(--line);padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px))}
+  .menu a{flex:1;display:grid;justify-items:center;gap:4px;font-size:.72rem;font-weight:500}
+  .menu a[aria-current]{text-decoration:none;font-weight:700}
+  .menu .ms{display:grid;place-items:center;width:56px;height:30px;border-radius:15px;font-size:22px;transition:background-color .3s var(--ease-standard)}
+  .menu a[aria-current] .ms{background:color-mix(in srgb,var(--action) 20%,transparent);color:var(--text)}
+  body{padding-bottom:84px}
+}
+
+/* hero */
+.hero{padding:clamp(40px,7vw,88px) 0 clamp(48px,8vw,96px)}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,5vw,64px);align-items:center}
+h1{font-size:clamp(3rem,8.2vw,6.6rem);font-weight:800;line-height:.92;letter-spacing:-0.045em}
+h1 .ty{display:block;min-height:.92em;white-space:nowrap}
+.cur{display:inline-block;width:.07em;height:.78em;margin-left:.05em;transform:translateY(.06em);animation:blink 1s steps(1) infinite}
+.ty:not(.on) .cur{display:none}
+@keyframes blink{50%{opacity:0}}
+.role{margin-top:28px;font-size:clamp(1.05rem,2vw,1.3rem);max-width:30ch;color:var(--muted);font-weight:500}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 26px;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid var(--line);transition:background-color .3s var(--ease-standard),border-color .3s var(--ease-standard),filter .3s var(--ease-standard)}
+.btn:hover{border-color:var(--text)}
+.btn-fill{background:var(--action);border-color:var(--action);color:var(--on-action)}
+.btn-fill:hover{border-color:var(--action);filter:brightness(1.08)}
+
+.frame{position:relative;aspect-ratio:1/1;width:100%;max-width:460px;justify-self:center}
+.chev{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.chev path{fill:none;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0;animation:draw .6s var(--ease-decel) both}
+.chev path:nth-child(2){animation-delay:.12s}.chev path:nth-child(3){animation-delay:.24s}.chev path:nth-child(4){animation-delay:.36s}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.photo{position:absolute;inset:6% 20%;border-radius:28px;background:var(--surface);overflow:hidden;display:grid;place-items:center}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:bottom}
+.photo b{font-size:clamp(2.4rem,7vw,4rem);font-weight:800;color:var(--muted);letter-spacing:-0.04em}
+
+/* gerak: bracket mengikuti mouse */
+.chev path:nth-child(-n+2){--k:16}
+.chev path:nth-child(n+3){--k:9}
+.chev path{transform:translate(calc(var(--mx,0)*var(--k,0)*1px),calc(var(--my,0)*var(--k,0)*1px))}
+.photo{transform:translate(calc(var(--mx,0)*-6px),calc(var(--my,0)*-6px))}
+
+/* gerak: teks role berganti */
+.rotor{margin-top:12px;font-size:clamp(1.05rem,2vw,1.3rem);font-weight:700;min-height:1.7em}
+.rot{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:500;font-size:.92em}
+.rotor .cur{width:2px;height:1.05em;margin-left:3px;transform:translateY(.18em)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media (max-width:1000px){.rotor{min-height:3.4em}}
+
+/* gerak: garis skill berjalan mengikuti scroll */
+.skill::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;border-radius:3px;background:var(--c);transform-origin:left;transform:scaleX(var(--p,1))}
+
+/* tentang */
+.about{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(20px,5vw,72px)}
+.about p{max-width:62ch;font-size:1.08rem}
+.about p+p{margin-top:16px;color:var(--muted)}
+
+/* skill */
+.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:32px 28px;margin-top:40px}
+.skill{position:relative;padding-top:20px}
+.skill h3{display:flex;align-items:center;gap:10px;font-size:1.05rem;font-weight:700;margin-bottom:10px}
+.skill li{list-style:none;color:var(--muted);padding:2px 0}
+@media (max-width:900px){.skills{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.skills{grid-template-columns:1fr}}
+
+/* project */
+.feature{display:grid;grid-template-columns:1fr;gap:28px;margin-top:40px;padding:clamp(20px,3vw,36px);background:var(--surface);border-radius:32px}
+.feature h3{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;letter-spacing:-0.02em}
+.feature p{margin-top:12px;max-width:62ch}
+.tags{margin-top:14px;color:var(--muted);font-size:.95rem;font-weight:500}
+.links{display:flex;gap:18px;margin-top:20px;font-weight:700}
+.links a{color:var(--action)}
+.shots{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.shot{aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#0d1117;border:1px solid var(--line);display:grid;place-items:center;color:#8b949e;font-size:.9rem;text-align:center;padding:16px;position:relative}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left}
+@media (max-width:760px){.shots{grid-template-columns:1fr}}
+
+/* carousel project */
+.carousel{margin-top:40px}
+.track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;position:relative;cursor:grab}
+.track::-webkit-scrollbar{display:none}
+.track.free{scroll-snap-type:none}
+.track.drag{cursor:grabbing;user-select:none}
+.slide{flex:0 0 94%;min-width:0;margin-top:0;scroll-snap-align:start}
+.slide h3::before{content:"";display:block;width:56px;height:5px;border-radius:3px;background:var(--c);margin-bottom:16px}
+.shot img{-webkit-user-drag:none;user-select:none}
+@media (max-width:760px){.slide{flex-basis:90%}}
+.ctrl{display:flex;align-items:center;gap:12px;margin-top:20px}
+.arrow{width:48px;height:48px;border-radius:50%;border:2px solid var(--line);background:none;color:var(--text);display:grid;place-items:center;cursor:pointer;transition:background-color .3s var(--ease-standard),border-color .3s var(--ease-standard),opacity .3s var(--ease-standard)}
+.arrow:hover:not(:disabled){background:var(--surface);border-color:var(--text)}
+.arrow:disabled{opacity:.35;cursor:not-allowed}
+.arrow svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.segs{display:flex;margin-left:auto}
+.seg{width:52px;height:32px;padding:0;border:0;background:none;display:grid;align-items:center;cursor:pointer}
+.seg i{display:block;height:4px;margin:0 4px;border-radius:2px;background:var(--line);position:relative;overflow:hidden}
+.seg i::after{content:"";position:absolute;inset:0;background:var(--c);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease-decel)}
+.seg[aria-current="true"] i::after{transform:scaleX(1)}
+@media (max-width:480px){.seg{width:38px}}
+
+/* ikon material */
+.ms{font-family:"Material Symbols Rounded";font-weight:400;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;width:1em;overflow:hidden;white-space:nowrap;direction:ltr;font-feature-settings:"liga";-webkit-font-smoothing:antialiased;visibility:hidden;flex:none}
+.ms-ok .ms{visibility:visible}
+.ic-chip{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--c) 18%,transparent)}
+.ic-chip .ms{font-size:22px;color:color-mix(in srgb,var(--c) 65%,var(--text))}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding:0;list-style:none}
+.chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px 0 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:.86rem;font-weight:500}
+.chip .ms{font-size:18px;color:color-mix(in srgb,var(--c) 65%,var(--text))}
+
+/* doodle: garis bergelombang di bawah judul bagian */
+h2::after{content:"";display:block;width:84px;height:12px;margin-top:12px;background:var(--c,var(--blue));-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 88 14'%3E%3Cpath d='M3 7c8-8 14 6 22 0s14-6 22 0 14 6 22 0 14-6 18-1' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E") left center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 88 14'%3E%3Cpath d='M3 7c8-8 14 6 22 0s14-6 22 0 14 6 22 0 14-6 18-1' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E") left center/contain no-repeat}
+#tentang{--c:var(--blue)}#skill{--c:var(--red)}#project{--c:var(--yellow)}#pencapaian{--c:var(--green)}#kontak{--c:var(--blue)}
+
+/* stiker di hero (bisa digeser) */
+.sticker{position:absolute;z-index:4;width:var(--s);height:var(--s);cursor:grab;touch-action:none;user-select:none;translate:var(--x,0px) var(--y,0px);rotate:var(--r,0deg);scale:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2));transition:scale .3s var(--ease-standard),filter .3s var(--ease-standard);animation:pop .5s var(--ease-decel) var(--d,0s) backwards}
+.sticker svg{display:block;width:100%;height:100%;pointer-events:none}
+.sticker.lift{scale:1.1;cursor:grabbing;filter:drop-shadow(0 10px 16px rgba(0,0,0,.26))}
+.s1{--s:78px;--r:8deg;--d:.95s;top:-8%;right:22%}
+.s2{--s:56px;--r:-6deg;--d:1.05s;top:34%;right:-9%}
+.s3{--s:60px;--r:10deg;--d:1.15s;top:6%;left:-6%}
+.s4{--s:84px;--r:-8deg;--d:1.25s;bottom:-6%;right:12%}
+@keyframes pop{from{scale:.4;opacity:0}to{scale:1;opacity:1}}
+@media (max-width:760px){.s3,.s4{display:none}.s2{right:-1%}}
+
+/* name tag peserta */
+.nametag{position:absolute;z-index:3;left:-9%;bottom:-13%;width:176px;background:#fff;color:#202124;border-radius:14px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.2),0 0 0 1px rgba(0,0,0,.06);transform-origin:50% 0;rotate:-5deg;animation:swing 1.5s var(--ease-decel) .8s backwards;pointer-events:none}
+.nt-top{position:relative;background:#1a73e8;color:#fff;text-align:center;font-weight:700;font-size:.8rem;line-height:1.3;padding:20px 10px 10px}
+.nt-top::before{content:"";position:absolute;top:7px;left:50%;width:34px;height:7px;margin-left:-17px;border-radius:4px;background:rgba(0,0,0,.28)}
+.nt-name{padding:14px 12px 4px;font-weight:800;font-size:1.12rem;line-height:1.15;letter-spacing:-.02em}
+.nt-foot{padding:6px 12px 12px;font-size:.74rem;line-height:1.35;font-weight:500;color:#5f6368}
+.nt-foot i{width:7px;height:7px;border-radius:50%;flex:none}
+.nt-foot span{display:block;margin-bottom:8px}
+.nt-dots{display:flex;gap:5px}
+@keyframes swing{0%{rotate:16deg}30%{rotate:-11deg}60%{rotate:-1deg}100%{rotate:-5deg}}
+@media (max-width:760px){.nametag{width:150px;left:-3%}}
+
+/* stiker miring di kartu project */
+.stk{position:absolute;z-index:2;top:-18px;right:18px;display:inline-flex;align-items:center;gap:6px;padding:7px 14px 7px 10px;border:3px solid #fff;border-radius:999px;background:var(--sc);color:var(--on,#fff);font-size:.85rem;font-weight:700;box-shadow:0 4px 10px rgba(0,0,0,.2);rotate:var(--r,4deg);pointer-events:none}
+.stk .ms{font-size:18px}
+
+/* konfeti */
+.chev path{cursor:pointer}
+#confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+.cf{position:absolute;width:10px;height:10px;border-radius:2px}
+.cf1{border-radius:50%}
+.cf2{width:14px;height:5px;border-radius:3px}
+
+/* pencapaian */
+.award{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;margin-top:40px;padding:clamp(22px,3vw,36px);background:var(--surface);border-radius:24px}
+.award svg{width:52px;height:52px;stroke:var(--text);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.award h3{font-size:1.35rem;font-weight:800}
+.award p{color:var(--muted);margin-top:4px;max-width:56ch}
+
+/* kontak */
+.contact{border-top:1px solid var(--line)}
+.contact p{margin-top:12px;color:var(--muted);max-width:50ch}
+.icons{display:flex;flex-wrap:wrap;gap:28px;margin-top:36px}
+.ic{display:grid;justify-items:center;gap:10px;text-decoration:none;font-size:.9rem;font-weight:500;color:var(--muted)}
+.ic span.c{width:64px;height:64px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;transition:background-color .3s var(--ease-standard),border-color .3s var(--ease-standard)}
+.ic svg{width:26px;height:26px;stroke:var(--text);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+a.ic:hover span.c{background:var(--surface);border-color:var(--text)}
+.ic.off{opacity:.45;cursor:not-allowed}
+footer{padding:28px 0 40px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+
+@media (max-width:760px){
+  .hero-grid,.about,.award{grid-template-columns:1fr}
+  .frame{max-width:340px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .chev path{animation:none}
+  .btn,.menu a,.ic span.c{transition:none}
+  .prog{display:none}
+  .arrow,.seg i::after{transition:none}
+  .sticker,.nametag{animation:none}
+}
+
+/* project detail actions */
+.project-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.project-actions .btn{min-height:42px;padding:0 18px;font-size:.88rem}.project-actions .btn:not(.btn-fill){background:var(--bg)}
+</style>
+</head>
+<body>
+<svg aria-hidden="true" height="0" style="position:absolute" width="0">
+<symbol id="i-mail" viewbox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></symbol>
+<symbol id="i-ig" viewbox="0 0 24 24"><rect height="20" rx="5" width="20" x="2" y="2"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></symbol>
+<symbol id="i-gh" viewbox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></symbol>
+<symbol id="i-in" viewbox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect height="12" width="4" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></symbol>
+</svg>
+<header class="top">
+<div class="wrap bar">
+<a class="brand" href="#atas">Sigit Hasyim Nasution</a>
+<nav aria-label="Navigasi utama" class="menu">
+<a href="#tentang"><span aria-hidden="true" class="ms">person</span><span>Tentang</span></a>
+<a href="#skill"><span aria-hidden="true" class="ms">psychology</span><span>Skill</span></a>
+<a href="#project"><span aria-hidden="true" class="ms">folder_special</span><span>Project</span></a>
+<a href="#pencapaian"><span aria-hidden="true" class="ms">emoji_events</span><span>Pencapaian</span></a>
+<a href="#kontak"><span aria-hidden="true" class="ms">mail</span><span>Kontak</span></a>
+</nav>
+</div>
+<div aria-hidden="true" class="prog"><i style="--c:#4285f4"></i><i style="--c:#ea4335"></i><i style="--c:#fbbc04"></i><i style="--c:#34a853"></i></div>
+</header>
+<main id="atas">
+<section class="hero">
+<div class="wrap hero-grid">
+<div>
+<h1 aria-label="Sigit Hasyim Nasution"><span aria-hidden="true" class="ty">Sigit</span><span aria-hidden="true" class="ty">Hasyim</span><span aria-hidden="true" class="ty">Nasution</span></h1>
+<p class="role">Web dan UI/UX designer dengan fondasi jaringan dan cyber security.</p>
+<p class="rotor">Saya mengerjakan <span aria-hidden="true" class="rot">website, desain UI/UX, jaringan, dan analisis data</span><span class="sr">website, desain UI/UX, jaringan, dan analisis data</span></p>
+<div class="cta">
+<a class="btn btn-fill" href="#project">Lihat project</a>
+<a class="btn" href="#kontak">Hubungi saya</a>
+</div>
+</div>
+<div class="frame">
+<div aria-hidden="true" class="sticker s1"><svg viewbox="0 0 100 100"><path d="M50 6C54 34 66 46 94 50 66 54 54 66 50 94 46 66 34 54 6 50 34 46 46 34 50 6Z" fill="#fbbc04" paint-order="stroke" stroke="#fff" stroke-linejoin="round" stroke-width="10"></path><ellipse cx="43" cy="38" fill="#fff" opacity=".4" rx="9" ry="5" transform="rotate(-40 43 38)"></ellipse></svg></div>
+<div aria-hidden="true" class="sticker s2"><svg viewbox="0 0 100 100"><circle cx="50" cy="50" fill="#4285f4" paint-order="stroke" r="42" stroke="#fff" stroke-width="10"></circle><ellipse cx="38" cy="33" fill="#fff" opacity=".32" rx="17" ry="9" transform="rotate(-30 38 33)"></ellipse><path d="M26 60c6-8 12 8 18 0s12-8 18 0 8 4 12 0" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5"></path></svg></div>
+<div aria-hidden="true" class="sticker s3"><svg viewbox="0 0 100 100"><rect fill="#ea4335" height="80" paint-order="stroke" rx="28" stroke="#fff" stroke-width="10" width="80" x="10" y="10"></rect><ellipse cx="34" cy="28" fill="#fff" opacity=".3" rx="16" ry="8" transform="rotate(-28 34 28)"></ellipse><path d="M50 40 53 50 63 53 53 56 50 66 47 56 37 53 47 50Z" fill="#fff"></path></svg></div>
+<div aria-hidden="true" class="sticker s4"><svg viewbox="0 0 100 100"><rect fill="#34a853" height="48" paint-order="stroke" rx="24" stroke="#fff" stroke-width="10" width="88" x="6" y="26"></rect><ellipse cx="32" cy="40" fill="#fff" opacity=".3" rx="15" ry="6" transform="rotate(-8 32 40)"></ellipse><circle cx="46" cy="53" fill="#fff" r="3.5"></circle><circle cx="58" cy="53" fill="#fff" r="3.5"></circle><circle cx="70" cy="53" fill="#fff" r="3.5"></circle></svg></div>
+<div aria-hidden="true" class="nametag">
+<div class="nt-top">SMK Madinatul Quran</div>
+<div class="nt-name">Sigit Hasyim<br/>Nasution</div>
+<div class="nt-foot"><span>Teknik Jaringan dan Komputer</span><div class="nt-dots"><i style="background:#4285f4"></i><i style="background:#ea4335"></i><i style="background:#fbbc04"></i><i style="background:#34a853"></i></div></div>
+</div>
+<svg aria-hidden="true" class="chev" viewbox="0 0 400 400">
+<path d="M70 70 L10 200" pathlength="1" stroke="#4285f4"></path>
+<path d="M10 200 L70 330" pathlength="1" stroke="#ea4335"></path>
+<path d="M330 70 L390 200" pathlength="1" stroke="#fbbc04"></path>
+<path d="M390 200 L330 330" pathlength="1" stroke="#34a853"></path>
+</svg>
+<div class="photo">
+<img alt="Foto Sigit Hasyim Nasution" onerror="this.remove()" onload="this.nextElementSibling.hidden=true" src="foto.png"/>
+<b>SH</b>
+</div>
+</div>
+</div>
+</section>
+<section class="block rule" id="tentang">
+<div class="wrap about">
+<h2>Tentang saya</h2>
+<div>
+<p>Saya di jurusan TKJ. Di sana saya belajar jaringan dengan MikroTik, Linux, dan dasar cyber security. Di luar kelas, saya lebih sering membuat website dan merancang tampilannya di Figma.</p>
+<p>Saya ingin mempertemukan dua hal itu: tampilan yang nyaman dipakai dan sistem yang aman. Saya ikut GDG Bogor untuk belajar langsung dari komunitas developer dan bertemu orang-orang yang membangun hal serupa.</p>
+</div>
+</div>
+</section>
+<section class="block flush" id="skill">
+<div class="wrap">
+<h2>Skill</h2>
+<div class="skills">
+<div class="skill" style="--c:var(--blue)">
+<h3><span class="ic-chip"><span aria-hidden="true" class="ms">palette</span></span>Desain</h3>
+<ul><li>Figma</li><li>UI/UX</li></ul>
+</div>
+<div class="skill" style="--c:var(--red)">
+<h3><span class="ic-chip"><span aria-hidden="true" class="ms">language</span></span>Web</h3>
+<ul><li>Pembuatan website</li><li>GitHub</li><li>Vercel</li></ul>
+</div>
+<div class="skill" style="--c:var(--yellow)">
+<h3><span class="ic-chip"><span aria-hidden="true" class="ms">security</span></span>Jaringan dan keamanan</h3>
+<ul><li>MikroTik</li><li>Linux</li><li>Cyber security</li></ul>
+</div>
+<div class="skill" style="--c:var(--green)">
+<h3><span class="ic-chip"><span aria-hidden="true" class="ms">insights</span></span>Data dan AI</h3>
+<ul><li>Data analysis</li><li>Google AI Studio</li><li>Gemini</li></ul>
+</div>
+</div>
+</div>
+</section>
+<section class="block flush" id="project">
+<div class="wrap">
+<h2>Project</h2>
+<div aria-label="Project saya" aria-roledescription="carousel" class="carousel" role="region">
+<div class="track" id="track" tabindex="0">
+<article aria-label="1 dari 4" aria-roledescription="slide" class="feature slide" role="group" style="--c:var(--blue)">
+<div>
+<h3>SakuKu</h3>
+<p>Aplikasi keuangan pribadi. Pengguna mencatat transaksi, melihat arus saldo mingguan, menetapkan batas anggaran, dan mendapat analisis keuangan dari AI.</p>
+<ul class="chips"><li class="chip"><span aria-hidden="true" class="ms">language</span>Web</li><li class="chip"><span aria-hidden="true" class="ms">draw</span>UI/UX</li><li class="chip"><span aria-hidden="true" class="ms">auto_awesome</span>Gemini</li></ul><div class="project-actions"><a aria-label="Lihat detail project SakuKu" class="btn btn-fill" href="projects/sakuku.html">Detail Project</a><a aria-label="Buka demo SakuKu" class="btn" href="https://my-wallet-nine-zeta.vercel.app/" rel="noopener noreferrer" target="_blank">Live Demo ↗</a></div>
+</div>
+<div class="shots">
+<span class="stk" style="--sc:#1a73e8;--on:#fff;--r:4deg"><span aria-hidden="true" class="ms">auto_awesome</span>Gemini</span>
+<div class="shot"><img alt="Dashboard SakuKu dengan arus saldo dan analisis keuangan AI" decoding="async" draggable="false" loading="lazy" src="assets/projects/sakuku-1.webp"/></div>
+<div class="shot"><img alt="Grafik pengeluaran tahunan, saldo, dan sisa anggaran di SakuKu" decoding="async" draggable="false" loading="lazy" src="assets/projects/sakuku-2.webp"/></div>
+</div>
+</article>
+<article aria-label="2 dari 4" aria-roledescription="slide" class="feature slide" role="group" style="--c:var(--red)">
+<div>
+<h3>Escape the Police: Cyber Pursuit</h3>
+<p>Game kejar-kejaran bergaya neon cyberpunk. Pemain mengendalikan mobil yang kabur dari polisi, memakai nitro dan EMP, menyelesaikan misi untuk mendapat bounty, lalu naik level dengan polisi yang makin ketat. Dibuat dengan Google AI Studio.</p>
+<ul class="chips"><li class="chip"><span aria-hidden="true" class="ms">sports_esports</span>Game</li><li class="chip"><span aria-hidden="true" class="ms">auto_fix_high</span>Google AI Studio</li></ul><div class="project-actions"><a aria-label="Lihat detail project Escape the Police: Cyber Pursuit" class="btn btn-fill" href="projects/escape-the-police.html">Detail Project</a><a aria-label="Buka demo Escape the Police: Cyber Pursuit" class="btn" href="https://escape-police.vercel.app/" rel="noopener noreferrer" target="_blank">Live Demo ↗</a></div>
+</div>
+<div class="shots">
+<span class="stk" style="--sc:#d93025;--on:#fff;--r:-5deg"><span aria-hidden="true" class="ms">auto_fix_high</span>Google AI Studio</span>
+<div class="shot"><img alt="Layar loading game Escape the Police dengan speedometer bergaya neon" decoding="async" draggable="false" loading="lazy" src="assets/projects/escape-the-police-1.webp"/></div>
+<div class="shot"><img alt="Tampilan permainan: mobil merah di jalan neon dikejar mobil polisi" decoding="async" draggable="false" loading="lazy" src="assets/projects/escape-the-police-2.webp"/></div>
+</div>
+</article>
+<article aria-label="3 dari 4" aria-roledescription="slide" class="feature slide" role="group" style="--c:var(--yellow)">
+<div>
+<h3>Gantthers Barbershop</h3>
+<p>Website company profile barber shop dengan beranda, blog, galeri, dan kontak, lengkap dengan tombol booking dan tampilan gelap bernuansa merah. Dibuat sebagai proyek sekolah.</p>
+<ul class="chips"><li class="chip"><span aria-hidden="true" class="ms">language</span>Web</li></ul><div class="project-actions"><a aria-label="Lihat detail project Gantthers Barbershop" class="btn btn-fill" href="projects/gantthers-barbershop.html">Detail Project</a><a aria-label="Buka demo Gantthers Barbershop" class="btn" href="https://training-oi-brown.vercel.app/" rel="noopener noreferrer" target="_blank">Live Demo ↗</a></div>
+</div>
+<div class="shots">
+<span class="stk" style="--sc:#fbbc04;--on:#202124;--r:3deg"><span aria-hidden="true" class="ms">school</span>Proyek sekolah</span>
+<div class="shot"><img alt="Halaman beranda website Gantthers Barbershop" decoding="async" draggable="false" loading="lazy" src="assets/projects/gantthers-barbershop-1.webp"/></div>
+<div class="shot"><img alt="Bagian blog dan footer website Gantthers Barbershop" decoding="async" draggable="false" loading="lazy" src="assets/projects/gantthers-barbershop-2.webp"/></div>
+</div>
+</article>
+<article aria-label="4 dari 4" aria-roledescription="slide" class="feature slide" role="group" style="--c:var(--green)">
+<div>
+<h3>KPK Intelligence</h3>
+<p>Dashboard bertema antikorupsi untuk tugas sekolah tentang pemerintah. Menampilkan data pelaku dan jumlah kerugian negara, grafik 10 kasus dengan nominal terbesar, distribusi per sektor, matriks risiko, serta halaman edukasi dan pengaduan whistleblower. Proyek sekolah, bukan situs resmi KPK.</p>
+<ul class="chips"><li class="chip"><span aria-hidden="true" class="ms">language</span>Web</li><li class="chip"><span aria-hidden="true" class="ms">draw</span>UI/UX</li><li class="chip"><span aria-hidden="true" class="ms">bar_chart</span>Visualisasi data</li></ul><div class="project-actions"><a aria-label="Lihat detail project KPK Intelligence" class="btn btn-fill" href="projects/kpk-intelligence.html">Detail Project</a><a aria-label="Buka demo KPK Intelligence" class="btn" href="https://kpk-2-0.vercel.app/" rel="noopener noreferrer" target="_blank">Live Demo ↗</a></div>
+</div>
+<div class="shots">
+<span class="stk" style="--sc:#188038;--on:#fff;--r:-4deg"><span aria-hidden="true" class="ms">school</span>Proyek sekolah</span>
+<div class="shot"><img alt="Beranda website KPK Intelligence dengan ticker data dan menu navigasi" decoding="async" draggable="false" loading="lazy" src="assets/projects/kpk-intelligence-1.webp"/></div>
+<div class="shot"><img alt="Halaman analitik KPK Intelligence dengan grafik batang, grafik donat, dan tabel sektor" decoding="async" draggable="false" loading="lazy" src="assets/projects/kpk-intelligence-2.webp"/></div>
+</div>
+</article>
+</div>
+<div class="ctrl">
+<button aria-label="Project sebelumnya" class="arrow" id="prev" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+<button aria-label="Project berikutnya" class="arrow" id="next" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+<div class="segs">
+<button aria-label="Lihat SakuKu" class="seg" style="--c:var(--blue)" type="button"><i></i></button>
+<button aria-label="Lihat Escape the Police" class="seg" style="--c:var(--red)" type="button"><i></i></button>
+<button aria-label="Lihat Gantthers Barbershop" class="seg" style="--c:var(--yellow)" type="button"><i></i></button>
+<button aria-label="Lihat KPK Intelligence" class="seg" style="--c:var(--green)" type="button"><i></i></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="block flush" id="pencapaian">
+<div class="wrap">
+<h2>Pencapaian</h2>
+<div class="award">
+<svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="9" r="6"></circle><path d="M8.5 14.5 7 22l5-3 5 3-1.5-7.5"></path></svg>
+<div>
+<h3>Lomba data analyst ITB</h3>
+<p>Peserta yang berhasil melewati seluruh tahap sampai akhir acara.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="block contact" id="kontak">
+<div class="wrap">
+<h2>Mari terhubung</h2>
+<p>Untuk berkenalan, bertanya soal project, atau mengajak berkolaborasi, pilih salah satu jalur di bawah.</p>
+<div class="icons">
+<a aria-label="Kirim email" class="ic" href="mailto:mhasy.gaming@gmail.com">
+<span class="c"><svg><use href="#i-mail"></use></svg></span>Email
+        </a>
+<a aria-label="Buka Instagram" class="ic" href="https://www.instagram.com/mhasy_hasyim/" rel="noopener" target="_blank">
+<span class="c"><svg><use href="#i-ig"></use></svg></span>Instagram
+        </a>
+
+<!-- Ganti div ini dengan <a class="ic" href="URL" target="_blank" rel="noopener"> kalau link LinkedIn sudah ada -->
+<div aria-label="LinkedIn, segera hadir" class="ic off" title="Segera hadir">
+<span class="c"><svg><use href="#i-in"></use></svg></span>LinkedIn
+        </div>
+</div>
+</div>
+</section>
+</main>
+<script>
+(function () {
+  var lines = document.querySelectorAll('.ty');
+  if (!lines.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var colors = ['#4285f4', '#ea4335', '#34a853'];
+  var texts = [].map.call(lines, function (l) { return l.textContent; });
+  [].forEach.call(lines, function (l) { l.innerHTML = '<span class="t"></span><i class="cur"></i>'; });
+  var li = 0, ci = 0;
+  function tick() {
+    var l = lines[li], t = texts[li];
+    if (ci === 0) {
+      [].forEach.call(lines, function (x) { x.classList.remove('on'); });
+      l.classList.add('on');
+      l.querySelector('.cur').style.background = colors[li];
+    }
+    ci++;
+    l.querySelector('.t').textContent = t.slice(0, ci);
+    if (ci < t.length) setTimeout(tick, 70 + Math.random() * 60);
+    else if (li < lines.length - 1) { li++; ci = 0; setTimeout(tick, 320); }
+    else document.dispatchEvent(new Event('namedone'));
+  }
+  setTimeout(tick, 600);
+})();
+</script>
+<script>
+/* Teks role berganti: ketik, tahan, hapus. Mulai setelah nama selesai diketik. */
+(function () {
+  var p = document.querySelector('.rotor');
+  if (!p || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var el = p.querySelector('.rot');
+  var words = ['website', 'desain UI/UX di Figma', 'jaringan MikroTik dan Linux', 'analisis data'];
+  var cols = ['#4285f4', '#ea4335', '#fbbc04', '#34a853'];
+  var wi = 0, ci = 0, del = false, started = false;
+  var cur = document.createElement('i');
+  cur.className = 'cur';
+  cur.style.background = cols[0];
+  cur.style.display = 'none';
+  el.textContent = '';
+  el.after(cur);
+  function step() {
+    var w = words[wi];
+    if (!del) {
+      ci++;
+      el.textContent = w.slice(0, ci);
+      if (ci === w.length) { del = true; return setTimeout(step, 1700); }
+      return setTimeout(step, 55 + Math.random() * 50);
+    }
+    ci--;
+    el.textContent = w.slice(0, ci);
+    if (ci === 0) {
+      del = false;
+      wi = (wi + 1) % words.length;
+      cur.style.background = cols[wi];
+      return setTimeout(step, 380);
+    }
+    setTimeout(step, 28);
+  }
+  function start() {
+    if (started) return;
+    started = true;
+    [].forEach.call(document.querySelectorAll('.ty'), function (x) { x.classList.remove('on'); });
+    cur.style.display = '';
+    step();
+  }
+  document.addEventListener('namedone', function () { setTimeout(start, 500); });
+  setTimeout(start, 7000);
+})();
+
+/* Bracket < > dan foto bergerak halus mengikuti mouse (hanya perangkat dengan mouse). */
+(function () {
+  var f = document.querySelector('.frame'), hero = document.querySelector('.hero');
+  if (!f || !hero) return;
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+  function loop() {
+    x += (tx - x) * 0.12;
+    y += (ty - y) * 0.12;
+    f.style.setProperty('--mx', x.toFixed(3));
+    f.style.setProperty('--my', y.toFixed(3));
+    raf = (Math.abs(tx - x) > 0.002 || Math.abs(ty - y) > 0.002) ? requestAnimationFrame(loop) : 0;
+  }
+  hero.addEventListener('pointermove', function (e) {
+    var r = hero.getBoundingClientRect();
+    tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+    ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+    if (!raf) raf = requestAnimationFrame(loop);
+  });
+  hero.addEventListener('pointerleave', function () {
+    tx = 0; ty = 0;
+    if (!raf) raf = requestAnimationFrame(loop);
+  });
+})();
+
+/* Garis warna berjalan mengikuti scroll: progres di header, garis tiap kelompok skill, dan menu aktif. */
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bars = [].slice.call(document.querySelectorAll('.prog i'));
+  var skills = [].slice.call(document.querySelectorAll('.skill'));
+  var nodes = bars.concat(skills);
+  var links = [].slice.call(document.querySelectorAll('.menu a'));
+  var secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  var cur = nodes.map(function () { return 0; });
+  var tar = nodes.map(function () { return 0; });
+  var raf = 0, queued = false;
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function paint() {
+    var moving = false;
+    for (var i = 0; i < nodes.length; i++) {
+      cur[i] += (tar[i] - cur[i]) * 0.14;
+      if (Math.abs(tar[i] - cur[i]) < 0.002) cur[i] = tar[i]; else moving = true;
+      nodes[i].style.setProperty('--p', cur[i].toFixed(3));
+    }
+    raf = moving ? requestAnimationFrame(paint) : 0;
+  }
+  function measure() {
+    queued = false;
+    var vh = innerHeight;
+    if (!reduce) {
+      var total = (document.documentElement.scrollHeight - vh) || 1;
+      var page = clamp(scrollY / total);
+      bars.forEach(function (b, i) { tar[i] = clamp(page * bars.length - i); });
+      skills.forEach(function (s, i) {
+        tar[bars.length + i] = clamp((vh * 0.95 - s.getBoundingClientRect().top) / (vh * 0.4) - i * 0.18);
+      });
+      if (!raf) raf = requestAnimationFrame(paint);
+    }
+    var on = -1;
+    secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= vh * 0.4) on = i; });
+    if (scrollY + vh >= document.documentElement.scrollHeight - 4) on = links.length - 1;
+    links.forEach(function (a, i) {
+      if (i === on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+  }
+  function queue() { if (!queued) { queued = true; requestAnimationFrame(measure); } }
+  if (!reduce) nodes.forEach(function (n) { n.style.setProperty('--p', '0'); });
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  measure();
+})();
+</script>
+<script>
+/* Carousel project: geser dengan sentuhan, tarik dengan mouse, tombol, atau panah keyboard. */
+(function () {
+  var tr = document.getElementById('track');
+  if (!tr) return;
+  var slides = [].slice.call(tr.querySelectorAll('.slide'));
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var segs = [].slice.call(document.querySelectorAll('.seg'));
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var now = 0, down = false, sx = 0, sl = 0, from = 0;
+  function nearest() {
+    var best = 0, dist = Infinity;
+    slides.forEach(function (s, i) {
+      var d = Math.abs(s.offsetLeft - tr.scrollLeft);
+      if (d < dist) { dist = d; best = i; }
+    });
+    return best;
+  }
+  function sync() {
+    now = nearest();
+    prev.disabled = now === 0;
+    next.disabled = now === slides.length - 1;
+    segs.forEach(function (g, i) { g.setAttribute('aria-current', i === now ? 'true' : 'false'); });
+  }
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    tr.scrollTo({ left: slides[i].offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
+  }
+  prev.addEventListener('click', function () { go(now - 1); });
+  next.addEventListener('click', function () { go(now + 1); });
+  segs.forEach(function (g, i) { g.addEventListener('click', function () { go(i); }); });
+  tr.addEventListener('scroll', function () { requestAnimationFrame(sync); }, { passive: true });
+  tr.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(now + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(now - 1); }
+  });
+  tr.addEventListener('dragstart', function (e) { e.preventDefault(); });
+  tr.addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    down = true; sx = e.clientX; sl = tr.scrollLeft; from = nearest();
+    tr.classList.add('drag', 'free');
+  });
+  addEventListener('pointermove', function (e) {
+    if (down) tr.scrollLeft = sl - (e.clientX - sx);
+  });
+  function release(e) {
+    if (!down) return;
+    down = false;
+    tr.classList.remove('drag');
+    var dx = e.clientX - sx, target = from;
+    if (dx < -60) target = from + 1;
+    else if (dx > 60) target = from - 1;
+    go(target);
+    setTimeout(function () { tr.classList.remove('free'); }, 650);
+  }
+  addEventListener('pointerup', release);
+  addEventListener('pointercancel', release);
+  addEventListener('resize', sync);
+  sync();
+})();
+</script>
+<script>
+/* Ikon Material: tampilkan setelah fontnya termuat. */
+(function () {
+  if (!document.fonts || !document.fonts.load) return;
+  document.fonts.load('24px "Material Symbols Rounded"', 'palette').then(function (f) {
+    if (f && f.length) document.documentElement.classList.add('ms-ok');
+  }).catch(function () {});
+})();
+
+/* Stiker di hero bisa digeser, tetap di dalam area hero. */
+(function () {
+  var hero = document.querySelector('.hero');
+  if (!hero) return;
+  [].forEach.call(document.querySelectorAll('.sticker'), function (el) {
+    var x = 0, y = 0, sx = 0, sy = 0, ox = 0, oy = 0, on = false;
+    el.addEventListener('pointerdown', function (e) {
+      on = true; sx = e.clientX; sy = e.clientY; ox = x; oy = y;
+      el.setPointerCapture(e.pointerId);
+      el.classList.add('lift');
+      e.preventDefault();
+    });
+    el.addEventListener('pointermove', function (e) {
+      if (!on) return;
+      var dx = ox + e.clientX - sx - x, dy = oy + e.clientY - sy - y;
+      var r = el.getBoundingClientRect(), h = hero.getBoundingClientRect();
+      if (r.left + dx < h.left) dx = h.left - r.left;
+      if (r.right + dx > h.right) dx = h.right - r.right;
+      if (r.top + dy < h.top) dy = h.top - r.top;
+      if (r.bottom + dy > h.bottom) dy = h.bottom - r.bottom;
+      x += dx; y += dy;
+      el.style.setProperty('--x', x.toFixed(1) + 'px');
+      el.style.setProperty('--y', y.toFixed(1) + 'px');
+    });
+    function end() { on = false; el.classList.remove('lift'); }
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', end);
+  });
+})();
+
+/* Konfeti empat warna saat tanda < > diklik. */
+(function () {
+  var chev = document.querySelector('.chev');
+  if (!chev || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cols = ['#4285f4', '#ea4335', '#fbbc04', '#34a853'], last = 0;
+  function burst(x, y) {
+    var now = Date.now();
+    if (now - last < 400) return;
+    last = now;
+    var layer = document.getElementById('confetti');
+    if (!layer) { layer = document.createElement('div'); layer.id = 'confetti'; document.body.appendChild(layer); }
+    for (var i = 0; i < 34; i++) {
+      var p = document.createElement('i');
+      p.className = 'cf cf' + (i % 3);
+      p.style.background = cols[i % 4];
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      layer.appendChild(p);
+      var ang = (-90 + (Math.random() * 140 - 70)) * Math.PI / 180;
+      var sp = 220 + Math.random() * 320, g = 900, dur = 1100 + Math.random() * 700, rot = Math.random() * 720 - 360;
+      var vx = Math.cos(ang) * sp, vy = Math.sin(ang) * sp, kf = [];
+      for (var k = 0; k <= 10; k++) {
+        var t = k / 10, tt = t * dur / 1000;
+        kf.push({
+          transform: 'translate(' + (vx * tt).toFixed(1) + 'px,' + (vy * tt + 0.5 * g * tt * tt).toFixed(1) + 'px) rotate(' + (rot * t).toFixed(0) + 'deg)',
+          opacity: t > 0.75 ? 1 - (t - 0.75) * 4 : 1
+        });
+      }
+      (function (el) {
+        el.animate(kf, { duration: dur, easing: 'linear', fill: 'forwards' }).onfinish = function () { el.remove(); };
+      })(p);
+    }
+  }
+  chev.addEventListener('click', function (e) { burst(e.clientX, e.clientY); });
+})();
+</script>
+<footer>
+<div class="wrap">© 2026 Sigit Hasyim Nasution</div>
+</footer>
+</body>
+</html>

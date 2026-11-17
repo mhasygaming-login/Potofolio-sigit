@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #ffffff;
+  --surface: #f3f6fb;
+  --surface-elevated: #ffffff;
+  --surface-tonal: #e8f0fe;
+  --surface-tonal-text: #174ea6;
+  --text: #1f1f1f;
+  --muted: #555a62;
+  --line: #dde2ea;
+  --action: #1a73e8;
+  --on-action: #ffffff;
+  --dot-color: rgba(26, 115, 232, 0.14);
+  --blue: #4285f4;
+  --red: #ea4335;
+  --yellow: #fbbc04;
+  --green: #34a853;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121317;
+    --surface: #1b1d23;
+    --surface-elevated: #22252d;
+    --surface-tonal: rgba(138, 180, 248, 0.14);
+    --surface-tonal-text: #aecbfa;
+    --text: #f1f3f4;
+    --muted: #a9aeb6;
+    --line: #2d3038;
+    --action: #8ab4f8;
+    --on-action: #14213d;
+    --dot-color: rgba(138, 180, 248, 0.12);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
+}
+
+body {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+code,
+pre,
+.font-mono {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Latar dot-grid halus ala Google Developer Groups dengan fade lembut di tepi */
+.gdg-dot-grid {
+  background-image: radial-gradient(var(--dot-color) 1.25px, transparent 1.25px);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, #000 45%, transparent 100%);
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, #000 45%, transparent 100%);
+}
+
+/* Permukaan & tombol taktil bergaya Material Design 3 */
+.m3-btn {
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 150ms ease,
+    border-color 150ms ease,
+    filter 150ms ease;
+}
+
+.m3-btn:active {
+  transform: scale(0.98);
+}
+
+/* Konsistensi aksesibilitas keyboard focus di seluruh halaman utama & halaman detail */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--action);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .m3-btn:active {
+    transform: none;
+  }
+}
