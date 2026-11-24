@@ -5,39 +5,132 @@ import {
   useDragControls,
   useMotionValue,
   useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
   type PanInfo,
 } from 'motion/react';
 import { ArrowRight, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
-import { AccentColor, ProjectItem, ProjectScreenshot } from '../data/portfolioData';
+import {
+  ACCENT_HEX_MAP,
+  ProjectItem,
+  ProjectScreenshot,
+  tokenizeTechLabel,
+} from '../data/portfolioData';
 
 interface ProjectCarouselProps {
   projects: ProjectItem[];
+  activeTechFilter?: string | null;
   onOpenDetail: (slug: string) => void;
   onPreviewScreenshot?: (shot: ProjectScreenshot & { projectTitle: string }) => void;
 }
 
-const ACCENT_MAP: Record<AccentColor, string> = {
-  blue: '#4285f4',
-  red: '#ea4335',
-  yellow: '#fbbc04',
-  green: '#34a853',
+interface SlideScreenshotsProps {
+  project: ProjectItem;
+  slideIndex: number;
+  slideStep: number;
+  trackX: MotionValue<number>;
+  parallaxY: MotionValue<number>;
+  shouldReduceMotion: boolean;
+  onPreviewScreenshot?: (shot: ProjectScreenshot & { projectTitle: string }) => void;
+}
+
+const SlideScreenshots: React.FC<SlideScreenshotsProps> = ({
+  project,
+  slideIndex,
+  slideStep,
+  trackX,
+  parallaxY,
+  shouldReduceMotion,
+  onPreviewScreenshot,
+}) => {
+  const parallaxX = useTransform(trackX, (latestX) => {
+    if (shouldReduceMotion || slideStep <= 0) return 0;
+    const targetX = -slideIndex * slideStep;
+    const normalized = Math.max(-1, Math.min(1, (latestX - targetX) / slideStep));
+    return normalized * 12;
+  });
+
+  return (
+    <div className="mt-5 border-t border-[var(--line)] pt-5">
+      <div
+        className={`grid gap-3 sm:gap-3.5 ${
+          project.screenshots.length > 2
+            ? 'grid-cols-2 sm:grid-cols-4'
+            : 'max-w-[500px] grid-cols-2'
+        }`}
+      >
+        {project.screenshots.map((shot) => (
+          <motion.button
+            key={shot.src}
+            type="button"
+            whileHover={shouldReduceMotion ? undefined : { y: -3 }}
+            whileTap={shouldReduceMotion ? undefined : { scale: 0.985 }}
+            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+            onClick={() =>
+              onPreviewScreenshot?.({
+                ...shot,
+                projectTitle: project.title,
+              })
+            }
+            className="group text-left"
+          >
+            <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-[var(--line)] bg-[#0b1120] transition-colors group-hover:border-[var(--action)]">
+              <motion.div
+                style={shouldReduceMotion ? undefined : { x: parallaxX, y: parallaxY }}
+                className={`absolute will-change-transform ${
+                  shouldReduceMotion ? 'inset-0' : '-inset-x-3.5 -inset-y-3'
+                }`}
+              >
+                <img
+                  src={shot.src}
+                  alt={shot.alt}
+                  loading="lazy"
+                  className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.03]"
+                />
+              </motion.div>
+            </div>
+            <p className="mt-1.5 truncate text-[11px] font-semibold text-[var(--muted)] transition-colors group-hover:text-[var(--text)] sm:text-xs">
+              {shot.label}
+            </p>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 const SLIDE_GAP = 20;
 
 export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
   projects,
+  activeTechFilter,
   onOpenDetail,
   onPreviewScreenshot,
 }) => {
+  const regionRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [viewportWidth, setViewportWidth] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduceMotion = Boolean(useReducedMotion());
   const dragControls = useDragControls();
   const x = useMotionValue(0);
+  const zeroMotion = useMotionValue(0);
+
+  const { scrollYProgress } = useScroll({
+    target: regionRef,
+    offset: ['start end', 'end start'],
+  });
+  const smoothScrollY = useSpring(scrollYProgress, {
+    stiffness: 180,
+    damping: 28,
+    restDelta: 0.001,
+  });
+  const rawParallaxY = useTransform(smoothScrollY, [0, 1], [-10, 10]);
+  const parallaxY = shouldReduceMotion ? zeroMotion : rawParallaxY;
 
   const slideStep = viewportWidth > 0 ? viewportWidth + SLIDE_GAP : 0;
   const maxOffset = Math.max(0, (projects.length - 1) * slideStep);
@@ -86,11 +179,13 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
     }
   }, [activeIndex, slideStep, x]);
 
+  const projectSlugsKey = projects.map((p) => p.slug).join(',');
+
   // Reset to first slide smoothly when filter changes
   useEffect(() => {
     setActiveIndex(0);
     x.set(0);
-  }, [projects.length, projects[0]?.slug, x]);
+  }, [projectSlugsKey, x]);
 
   const handleTrackPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (projects.length <= 1) return;
@@ -135,7 +230,16 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
   };
 
   return (
-    <div
+    <motion.div
+      ref={regionRef}
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 48, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={
+        shouldReduceMotion
+          ? { duration: 0 }
+          : { duration: 0.95, ease: [0.16, 1, 0.3, 1] }
+      }
       aria-label="Galeri geser project"
       aria-roledescription="carousel"
       role="region"
@@ -183,16 +287,21 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
                       scale: idx === activeIndex ? 1 : 0.985,
                     }
               }
+              whileHover={
+                shouldReduceMotion || idx !== activeIndex
+                  ? undefined
+                  : { y: -3, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } }
+              }
               transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
               style={{ width: viewportWidth > 0 ? viewportWidth : '100%' }}
-              className="shrink-0 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-7"
+              className="shrink-0 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 transition-[border-color,box-shadow] duration-200 hover:border-[var(--action)]/45 hover:shadow-md sm:p-7"
             >
               {/* Ringkasan Singkat & Aksi */}
               <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
                 <div className="max-w-[58ch]">
                   <div
                     className="mb-3 h-1 w-12 rounded-full"
-                    style={{ backgroundColor: ACCENT_MAP[project.accent] }}
+                    style={{ backgroundColor: ACCENT_HEX_MAP[project.accent] }}
                   />
 
                   <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[var(--muted)]">
@@ -213,8 +322,28 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
                     {project.summary}
                   </p>
 
-                  <p className="mt-3 font-mono text-xs text-[var(--muted)]">
-                    {project.stack.join(' · ')}
+                  <p className="mt-3 flex flex-wrap items-center gap-x-1.5 gap-y-1 font-mono text-xs text-[var(--muted)]">
+                    {project.stack.map((tech, techIdx) => {
+                      const activeTokens = activeTechFilter ? tokenizeTechLabel(activeTechFilter) : [];
+                      const isMatched =
+                        activeTokens.length > 0 &&
+                        tokenizeTechLabel(tech).some((t) => activeTokens.includes(t));
+
+                      return (
+                        <React.Fragment key={tech}>
+                          {techIdx > 0 && <span aria-hidden="true">·</span>}
+                          <span
+                            className={
+                              isMatched
+                                ? 'rounded bg-[var(--action)]/12 px-1.5 py-0.5 font-bold text-[var(--action)]'
+                                : undefined
+                            }
+                          >
+                            {tech}
+                          </span>
+                        </React.Fragment>
+                      );
+                    })}
                   </p>
                 </div>
 
@@ -240,42 +369,16 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
                 </div>
               </div>
 
-              {/* Gambar Project (Diperkecil & Terlihat Semua) */}
-              <div className="mt-5 border-t border-[var(--line)] pt-5">
-                <div
-                  className={`grid gap-3 sm:gap-3.5 ${
-                    project.screenshots.length > 2
-                      ? 'grid-cols-2 sm:grid-cols-4'
-                      : 'max-w-[500px] grid-cols-2'
-                  }`}
-                >
-                  {project.screenshots.map((shot) => (
-                    <button
-                      key={shot.src}
-                      type="button"
-                      onClick={() =>
-                        onPreviewScreenshot?.({
-                          ...shot,
-                          projectTitle: project.title,
-                        })
-                      }
-                      className="group text-left"
-                    >
-                      <div className="aspect-video w-full overflow-hidden rounded-xl border border-[var(--line)] bg-[#0b1120] transition-colors group-hover:border-[var(--action)]">
-                        <img
-                          src={shot.src}
-                          alt={shot.alt}
-                          loading="lazy"
-                          className="h-full w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.03]"
-                        />
-                      </div>
-                      <p className="mt-1.5 truncate text-[11px] font-semibold text-[var(--muted)] transition-colors group-hover:text-[var(--text)] sm:text-xs">
-                        {shot.label}
-                      </p>
-                    </button>
-                  ))}
-                </div>
-              </div>
+              {/* Gambar Project dengan Parallax Vertikal & Geser Slide */}
+              <SlideScreenshots
+                project={project}
+                slideIndex={idx}
+                slideStep={slideStep}
+                trackX={x}
+                parallaxY={parallaxY}
+                shouldReduceMotion={shouldReduceMotion}
+                onPreviewScreenshot={onPreviewScreenshot}
+              />
             </motion.article>
           ))}
         </motion.div>
@@ -330,7 +433,7 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
                           : { duration: 0.3, ease: [0.05, 0.7, 0.1, 1] }
                       }
                       className="absolute inset-0 origin-left"
-                      style={{ backgroundColor: ACCENT_MAP[p.accent] }}
+                      style={{ backgroundColor: ACCENT_HEX_MAP[p.accent] }}
                     />
                   </span>
                 </button>
@@ -339,6 +442,6 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };

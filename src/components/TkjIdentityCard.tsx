@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { ArrowLeftRight, Check, Copy, ExternalLink } from 'lucide-react';
-import { PROFILE } from '../data/portfolioData';
+import { BRAND_COLORS, PROFILE } from '../data/portfolioData';
 
-const GDG_COLORS = ['#4285f4', '#ea4335', '#fbbc04', '#34a853'];
-
-export const GdgDeveloperCard: React.FC = () => {
+export const TkjIdentityCard: React.FC = () => {
   const [showBack, setShowBack] = useState(false);
   const [copied, setCopied] = useState(false);
   const shouldReduceMotion = Boolean(useReducedMotion());
@@ -21,13 +19,27 @@ export const GdgDeveloperCard: React.FC = () => {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)]">
-      {/* DevFest Lanyard Slot & 4-Color Google Bar */}
+    <motion.div
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 46, scale: 0.975 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.14 }}
+      whileHover={
+        shouldReduceMotion
+          ? undefined
+          : { y: -4, transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] } }
+      }
+      transition={
+        shouldReduceMotion
+          ? { duration: 0 }
+          : { duration: 0.95, ease: [0.16, 1, 0.3, 1] }
+      }
+      className="relative overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--action)]/45 hover:shadow-md"
+    >
+      {/* Header kartu identitas pelajar TKJ */}
       <div className="border-b border-[var(--line)] bg-[var(--surface-elevated)] px-5 pb-3.5 pt-4">
         <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-[var(--line)]" aria-hidden="true" />
         <div className="flex items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2 font-bold text-[var(--text)]">
-            {/* Geometric < > GDG motif */}
             <svg aria-hidden="true" viewBox="0 0 28 16" className="h-3.5 w-6 shrink-0" fill="none">
               <path
                 d="M9 2L3 8L9 14"
@@ -50,14 +62,14 @@ export const GdgDeveloperCard: React.FC = () => {
         </div>
       </div>
 
-      {/* 4-Color Divider */}
+      {/* Garis aksen 4 warna */}
       <div aria-hidden="true" className="flex h-[3px] w-full">
-        {GDG_COLORS.map((color) => (
+        {BRAND_COLORS.map((color) => (
           <div key={color} className="flex-1" style={{ backgroundColor: color }} />
         ))}
       </div>
 
-      {/* Interactive Card Body */}
+      {/* Isi kartu interaktif */}
       <div className="p-5 sm:p-6">
         <AnimatePresence mode="wait">
           {!showBack ? (
@@ -161,6 +173,6 @@ export const GdgDeveloperCard: React.FC = () => {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

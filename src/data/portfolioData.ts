@@ -1,5 +1,48 @@
 export type AccentColor = 'blue' | 'red' | 'yellow' | 'green';
 
+export const ACCENT_HEX_MAP: Record<AccentColor, string> = {
+  blue: '#4285f4',
+  red: '#ea4335',
+  yellow: '#fbbc04',
+  green: '#34a853',
+};
+
+export const BRAND_COLORS = [
+  ACCENT_HEX_MAP.blue,
+  ACCENT_HEX_MAP.red,
+  ACCENT_HEX_MAP.yellow,
+  ACCENT_HEX_MAP.green,
+] as const;
+
+export interface LightboxMedia {
+  title: string;
+  caption: string;
+  src: string;
+  alt: string;
+}
+
+export interface TechFilterState {
+  tech: string;
+  excludeSlug: string;
+  sourceTitle: string;
+}
+
+export function tokenizeTechLabel(label: string): string[] {
+  return label
+    .split('/')
+    .map((part) => part.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+export function projectMatchesTechnology(project: ProjectItem, tech: string): boolean {
+  const targetTokens = tokenizeTechLabel(tech);
+  if (targetTokens.length === 0) return false;
+  return project.stack.some((item) => {
+    const itemTokens = tokenizeTechLabel(item);
+    return targetTokens.some((token) => itemTokens.includes(token));
+  });
+}
+
 export type FeatureStatus = 'Berjalan' | 'Simulasi' | 'Eksperimen' | 'Belum Selesai';
 
 export interface FeatureMatrixItem {
@@ -632,6 +675,28 @@ export const PROJECTS: ProjectItem[] = [
     ],
   },
 ];
+
+export const CISCO_CERTIFICATE = {
+  title: 'Networking Basics — Cisco Networking Academy',
+  subtitle: 'Dasar-Dasar Jaringan SMK Madinatul Quran',
+  organizer: 'SMK Madinatul Quran · Cisco Networking Academy',
+  recipientName: 'hasyim nasution',
+  instructor: 'Fathi Muhammad Shalahuddin',
+  issuedDate: '27 September 2025',
+  totalHours: '22 Jam',
+  summary:
+    'Menyelesaikan kursus dasar jaringan komputer mencakup media jaringan, jenis jaringan, layanan lapisan aplikasi, pengalamatan IPv4, akses nirkabel, dan protokol standar.',
+  skillsLine:
+    'Media Jaringan · Jenis Jaringan · Layanan Lapisan Aplikasi · Alamat IPv4 · Akses Nirkabel · Protokol Standar',
+  previewImage: {
+    title: 'Sertifikat Networking Basics — Cisco Networking Academy',
+    caption: 'Diterbitkan 27 September 2025 · SMK Madinatul Quran (22 Jam)',
+    src: '/assets/aistudio/cisco_networking_basics_cert.png',
+    alt: 'Sertifikat kelulusan resmi Networking Basics Cisco Networking Academy atas nama hasyim nasution dari SMK Madinatul Quran',
+  },
+  pdfUrl:
+    '/assets/aistudio/Networking_Basics_certificate_mhasy-gaming-gmail-com_4e1eb55f-56e5-47bd-8899-5570ff248ffb_59eb96ba.pdf',
+};
 
 export const ACHIEVEMENT = {
   title: 'Data Detective Bootcamp 2026: Pelatihan Business Analytics',

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { ArrowRight, Command, Network } from 'lucide-react';
-import { PROFILE } from '../data/portfolioData';
+import { BRAND_COLORS, PROFILE } from '../data/portfolioData';
 
 interface HeroProps {
   onExploreProjects: () => void;
@@ -21,7 +21,6 @@ interface ConfettiPiece {
 }
 
 const NAME_LINES = ['Sigit', 'Hasyim', 'Nasution'];
-const ROTOR_COLORS = ['#4285f4', '#ea4335', '#fbbc04', '#34a853'];
 const SMOOTH_EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const DURATION = 0.4;
 const STAGGER = 0.07;
@@ -93,7 +92,7 @@ export const Hero: React.FC<HeroProps> = ({
         y: baseY,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        color: ROTOR_COLORS[idx % ROTOR_COLORS.length],
+        color: BRAND_COLORS[idx % BRAND_COLORS.length],
         rotation: Math.random() * 360,
         shape: idx % 3,
       };
@@ -143,8 +142,8 @@ export const Hero: React.FC<HeroProps> = ({
       onPointerLeave={handleHeroPointerLeave}
       className="relative overflow-x-clip py-12 sm:py-16 lg:py-20"
     >
-      {/* Subtle GDG Dot-Grid Canvas Texture */}
-      <div aria-hidden="true" className="gdg-dot-grid pointer-events-none absolute inset-0 -z-10" />
+      {/* Tekstur latar dot-grid halus */}
+      <div aria-hidden="true" className="dot-grid-canvas pointer-events-none absolute inset-0 -z-10" />
       {/* Confetti overlay */}
       {confetti.length > 0 && (
         <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
@@ -229,7 +228,7 @@ export const Hero: React.FC<HeroProps> = ({
                 }
                 className="font-mono text-[var(--text)]"
                 style={{
-                  borderBottom: `2px solid ${ROTOR_COLORS[rotorIdx % ROTOR_COLORS.length]}`,
+                  borderBottom: `2px solid ${BRAND_COLORS[rotorIdx % BRAND_COLORS.length]}`,
                 }}
               >
                 {PROFILE.focusLines[rotorIdx]}
@@ -376,7 +375,7 @@ export const Hero: React.FC<HeroProps> = ({
                   Teknik Komputer &amp; Jaringan
                 </p>
                 <div aria-hidden="true" className="mt-2.5 flex gap-1.5">
-                  {ROTOR_COLORS.map((c) => (
+                  {BRAND_COLORS.map((c) => (
                     <span key={c} className="h-2 w-2 rounded-full" style={{ backgroundColor: c }} />
                   ))}
                 </div>
@@ -452,11 +451,11 @@ export const Hero: React.FC<HeroProps> = ({
               >
                 {!photoError && (
                   <img
-                    src="/foto.png"
-                    alt="Foto profil Sigit Hasyim Nasution"
+                    src="/assets/aistudio/Pemandangan_gunung_berkabut_di_ketinggian_967760b0.png"
+                    alt="Foto setengah badan Sigit Hasyim Nasution"
                     onLoad={() => setPhotoLoaded(true)}
                     onError={() => setPhotoError(true)}
-                    className={`absolute inset-0 h-full w-full object-cover object-bottom transition-opacity duration-300 ${
+                    className={`absolute inset-0 h-full w-full origin-[50%_44%] scale-[1.58] object-cover object-center transition-opacity duration-300 ${
                       photoLoaded ? 'opacity-100' : 'opacity-0'
                     }`}
                   />

@@ -2,16 +2,16 @@
 
 :root {
   --bg: #ffffff;
-  --surface: #f3f6fb;
+  --surface: #e4ecf7;
   --surface-elevated: #ffffff;
-  --surface-tonal: #e8f0fe;
-  --surface-tonal-text: #174ea6;
-  --text: #1f1f1f;
-  --muted: #555a62;
-  --line: #dde2ea;
+  --surface-tonal: #cfe0fc;
+  --surface-tonal-text: #0f3d8a;
+  --text: #12151a;
+  --muted: #3b424d;
+  --line: #bcc8dc;
   --action: #1a73e8;
   --on-action: #ffffff;
-  --dot-color: rgba(26, 115, 232, 0.14);
+  --dot-color: rgba(26, 115, 232, 0.22);
   --blue: #4285f4;
   --red: #ea4335;
   --yellow: #fbbc04;
@@ -24,14 +24,14 @@
     --bg: #121317;
     --surface: #1b1d23;
     --surface-elevated: #22252d;
-    --surface-tonal: rgba(138, 180, 248, 0.14);
+    --surface-tonal: rgba(138, 180, 248, 0.16);
     --surface-tonal-text: #aecbfa;
-    --text: #f1f3f4;
-    --muted: #a9aeb6;
-    --line: #2d3038;
+    --text: #f3f5f7;
+    --muted: #b4b9c2;
+    --line: #343844;
     --action: #8ab4f8;
     --on-action: #14213d;
-    --dot-color: rgba(138, 180, 248, 0.12);
+    --dot-color: rgba(138, 180, 248, 0.14);
   }
 }
 
@@ -40,8 +40,24 @@
 }
 
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 76px;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
 }
 
 body {
@@ -71,8 +87,8 @@ p {
   text-wrap: pretty;
 }
 
-/* Latar dot-grid halus ala Google Developer Groups dengan fade lembut di tepi */
-.gdg-dot-grid {
+/* Latar dot-grid halus dengan fade lembut di tepi */
+.dot-grid-canvas {
   background-image: radial-gradient(var(--dot-color) 1.25px, transparent 1.25px);
   background-size: 24px 24px;
   -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, #000 45%, transparent 100%);

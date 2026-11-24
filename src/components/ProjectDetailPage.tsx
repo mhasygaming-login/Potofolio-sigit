@@ -1,4 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion, useReducedMotion } from 'motion/react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -8,42 +11,83 @@ import {
   Wrench,
   ShieldAlert,
 } from 'lucide-react';
-import { ProjectItem, PROJECTS, ProjectScreenshot } from '../data/portfolioData';
+import {
+  ACCENT_HEX_MAP,
+  ProjectItem,
+  PROJECTS,
+  projectMatchesTechnology,
+  ProjectScreenshot,
+} from '../data/portfolioData';
 import { ProjectVisualPreview } from './ProjectVisualPreview';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface ProjectDetailPageProps {
   project: ProjectItem;
   onBack: () => void;
   onSelectProject: (slug: string) => void;
+  onSelectTechnology: (tech: string) => void;
   onPreviewScreenshot?: (shot: ProjectScreenshot & { projectTitle: string }) => void;
 }
-
-const ACCENT_HEX: Record<ProjectItem['accent'], string> = {
-  blue: '#4285f4',
-  red: '#ea4335',
-  yellow: '#fbbc04',
-  green: '#34a853',
-};
 
 export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   project,
   onBack,
   onSelectProject,
+  onSelectTechnology,
   onPreviewScreenshot,
 }) => {
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
+  const shouldReduceMotion = Boolean(useReducedMotion());
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
     headingRef.current?.focus();
   }, [project.slug]);
 
+  useEffect(() => {
+    if (shouldReduceMotion || !mainRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const headings = gsap.utils.toArray<HTMLElement>('[data-gsap-heading]');
+      headings.forEach((heading) => {
+        gsap.set(heading, { opacity: 0, y: 40 });
+
+        let hasPlayed = false;
+        const playHeading = () => {
+          if (hasPlayed) return;
+          hasPlayed = true;
+          gsap.to(heading, {
+            opacity: 1,
+            y: 0,
+            duration: 1.05,
+            ease: 'expo.out',
+            clearProps: 'transform,opacity',
+          });
+        };
+
+        ScrollTrigger.create({
+          trigger: heading,
+          start: 'top 82%',
+          onEnter: playHeading,
+          onEnterBack: playHeading,
+          onRefresh: (st) => {
+            if (st.progress > 0) playHeading();
+          },
+        });
+      });
+    }, mainRef);
+
+    return () => ctx.revert();
+  }, [project.slug, shouldReduceMotion]);
+
   const currentIdx = PROJECTS.findIndex((p) => p.slug === project.slug);
   const prevProject = currentIdx > 0 ? PROJECTS[currentIdx - 1] : null;
   const nextProject = currentIdx < PROJECTS.length - 1 ? PROJECTS[currentIdx + 1] : null;
 
   return (
-    <main className="mx-auto w-[min(1040px,calc(100%-32px))] py-10 pb-24 sm:py-14">
+    <main ref={mainRef} className="mx-auto w-[min(1040px,calc(100%-32px))] py-10 pb-24 sm:py-14">
       {/* Top bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--line)] pb-5">
         <button
@@ -70,7 +114,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
       <header className="mt-8">
         <div
           className="mb-4 h-1 w-16 rounded-full"
-          style={{ backgroundColor: ACCENT_HEX[project.accent] }}
+          style={{ backgroundColor: ACCENT_HEX_MAP[project.accent] }}
         />
 
         <div className="flex flex-wrap items-center gap-2 text-sm text-[var(--muted)]">
@@ -100,10 +144,40 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           {project.summary}
         </p>
 
-        <p className="mt-4 text-sm text-[var(--muted)]">
-          <span className="font-semibold text-[var(--text)]">Teknologi:</span>{' '}
-          {project.stack.join(' · ')}
-        </p>
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <span className="mr-1 text-sm font-semibold text-[var(--text)]">Teknologi:</span>
+          {project.stack.map((tech) => {
+            const otherMatchCount = PROJECTS.filter(
+              (p) => p.slug !== project.slug && projectMatchesTechnology(p, tech)
+            ).length;
+
+            return (
+              <button
+                key={tech}
+                type="button"
+                onClick={() => onSelectTechnology(tech)}
+                title={
+                  otherMatchCount > 0
+                    ? `Lihat ${otherMatchCount} proyek lain yang menggunakan ${tech}`
+                    : `Filter proyek lain yang menggunakan ${tech}`
+                }
+                aria-label={
+                  otherMatchCount > 0
+                    ? `Filter proyek lain dengan teknologi ${tech} (${otherMatchCount} proyek)`
+                    : `Filter proyek lain dengan teknologi ${tech}`
+                }
+                className="m3-btn inline-flex min-h-[32px] items-center gap-1.5 rounded-lg border border-[var(--line)] bg-[var(--surface)] px-2.5 py-1 font-mono text-xs font-semibold text-[var(--text)] transition-colors hover:border-[var(--action)] hover:bg-[var(--surface-elevated)] hover:text-[var(--action)]"
+              >
+                <span>{tech}</span>
+                {otherMatchCount > 0 && (
+                  <span className="text-[11px] font-medium text-[var(--muted)]">
+                    +{otherMatchCount}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
 
         {/* Gambar Tampilan Project (Compact & Click-to-Zoom) */}
         <div
@@ -113,10 +187,20 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
               : 'max-w-[520px] grid-cols-2'
           }`}
         >
-          {project.screenshots.map((shot) => (
-            <button
+          {project.screenshots.map((shot, idx) => (
+            <motion.button
               key={shot.src}
               type="button"
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              whileHover={shouldReduceMotion ? undefined : { y: -3 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.985 }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : { duration: 0.35, delay: idx * 0.05, ease: [0.16, 1, 0.3, 1] }
+              }
               onClick={() =>
                 onPreviewScreenshot?.({
                   ...shot,
@@ -135,15 +219,28 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
               <p className="mt-1.5 truncate text-xs font-semibold text-[var(--muted)] transition-colors group-hover:text-[var(--text)]">
                 {shot.label}
               </p>
-            </button>
+            </motion.button>
           ))}
         </div>
       </header>
 
       {/* Single-elevation interactive preview */}
-      <section
+      <motion.section
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 40, scale: 0.98 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.12 }}
+        whileHover={
+          shouldReduceMotion
+            ? undefined
+            : { y: -3, transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] } }
+        }
+        transition={
+          shouldReduceMotion
+            ? { duration: 0 }
+            : { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
+        }
         aria-label="Pratinjau Interaktif dan Arsitektur"
-        className="mt-10 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 sm:p-7"
+        className="mt-10 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 transition-[border-color,box-shadow] duration-200 hover:border-[var(--action)]/45 hover:shadow-md sm:p-7"
       >
         <div className="mb-5 flex flex-wrap items-center justify-between gap-2 border-b border-[var(--line)] pb-3">
           <h2 className="text-sm font-bold text-[var(--text)] sm:text-base">
@@ -152,12 +249,15 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           <span className="text-xs text-[var(--muted)]">Dapat diuji langsung</span>
         </div>
         <ProjectVisualPreview slug={project.slug} mode="detail" />
-      </section>
+      </motion.section>
 
       {/* Problem & Solution */}
       <section className="mt-12 grid grid-cols-1 gap-8 border-t border-[var(--line)] pt-10 md:grid-cols-2">
         <div>
-          <h2 className="text-xl font-extrabold tracking-tight text-[var(--text)]">
+          <h2
+            data-gsap-heading
+            className="text-xl font-extrabold tracking-tight text-[var(--text)]"
+          >
             Masalah yang Diselesaikan
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-[var(--muted)] sm:text-base">
@@ -166,7 +266,10 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         </div>
 
         <div>
-          <h2 className="text-xl font-extrabold tracking-tight text-[var(--text)]">
+          <h2
+            data-gsap-heading
+            className="text-xl font-extrabold tracking-tight text-[var(--text)]"
+          >
             Pendekatan Solusi
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-[var(--muted)] sm:text-base">
@@ -176,14 +279,28 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
       </section>
 
       {/* MY ROLE & CONTRIBUTION */}
-      <section
+      <motion.section
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 40, scale: 0.98 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.14 }}
+        whileHover={
+          shouldReduceMotion
+            ? undefined
+            : { y: -3, transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] } }
+        }
+        transition={
+          shouldReduceMotion
+            ? { duration: 0 }
+            : { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
+        }
         aria-labelledby="role-heading"
-        className="mt-12 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 sm:p-8"
+        className="mt-12 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-6 transition-[border-color,box-shadow] duration-200 hover:border-[var(--action)]/45 hover:shadow-md sm:p-8"
       >
         <div className="border-b border-[var(--line)] pb-4">
           <p className="text-xs font-bold text-[var(--action)]">Akuntabilitas Pengerjaan</p>
           <h2
             id="role-heading"
+            data-gsap-heading
             className="mt-1 text-2xl font-extrabold tracking-tight text-[var(--text)]"
           >
             My Role &amp; Contribution
@@ -247,11 +364,14 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
             </p>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Architecture & Flow (Clean flat columns separated by hairline dividers) */}
       <section className="mt-12 border-t border-[var(--line)] pt-10">
-        <h2 className="text-2xl font-extrabold tracking-tight text-[var(--text)]">
+        <h2
+          data-gsap-heading
+          className="text-2xl font-extrabold tracking-tight text-[var(--text)]"
+        >
           Arsitektur &amp; Alur Penggunaan
         </h2>
         <p className="mt-2 max-w-[68ch] text-sm text-[var(--muted)] sm:text-base">
@@ -259,12 +379,24 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         </p>
 
         <div className="mt-8 grid grid-cols-1 gap-6 border-t border-[var(--line)] pt-6 sm:grid-cols-2 lg:grid-cols-4">
-          {project.architectureSteps.map((step) => (
-            <div key={step.step}>
+          {project.architectureSteps.map((step, idx) => (
+            <motion.div
+              key={step.step}
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              whileHover={shouldReduceMotion ? undefined : { y: -3 }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : { duration: 0.35, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }
+              }
+              className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-4 transition-colors hover:border-[var(--action)]/60"
+            >
               <p className="font-mono text-xs font-bold text-[var(--action)]">{step.step}.</p>
               <h3 className="mt-1.5 text-sm font-bold text-[var(--text)]">{step.title}</h3>
               <p className="mt-2 text-xs leading-relaxed text-[var(--muted)]">{step.detail}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -272,7 +404,10 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
       {/* Feature Matrix & Disclaimer / Privacy */}
       <section className="mt-12 grid grid-cols-1 gap-10 border-t border-[var(--line)] pt-10 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <h2 className="text-xl font-extrabold tracking-tight text-[var(--text)]">
+          <h2
+            data-gsap-heading
+            className="text-xl font-extrabold tracking-tight text-[var(--text)]"
+          >
             Status Setiap Fitur
           </h2>
           <p className="mt-1 text-sm text-[var(--muted)]">

@@ -19,6 +19,7 @@ interface CommandPaletteProps {
   onClose: () => void;
   onNavigateSection: (sectionId: string) => void;
   onOpenProject: (slug: string) => void;
+  onOpenCiscoCertificate: () => void;
   onOpenCertificate: () => void;
 }
 
@@ -37,6 +38,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onClose,
   onNavigateSection,
   onOpenProject,
+  onOpenCiscoCertificate,
   onOpenCertificate,
 }) => {
   const [query, setQuery] = useState('');
@@ -155,6 +157,18 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         },
       },
       {
+        id: 'act-cisco-cert',
+        group: 'Aksi Cepat',
+        label: 'Lihat Sertifikat Cisco Networking Basics',
+        hint: 'Pratinjau',
+        keywords: 'sertifikat cisco networking basics jaringan tkj',
+        icon: Award,
+        action: () => {
+          onClose();
+          onOpenCiscoCertificate();
+        },
+      },
+      {
         id: 'act-cert',
         group: 'Aksi Cepat',
         label: 'Lihat Sertifikat Data Detective SBM ITB',
@@ -181,7 +195,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     ];
 
     return [...sectionItems, ...projectItems, ...quickActions];
-  }, [copied, onClose, onNavigateSection, onOpenCertificate, onOpenProject]);
+  }, [copied, onClose, onNavigateSection, onOpenCertificate, onOpenCiscoCertificate, onOpenProject]);
 
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase();
