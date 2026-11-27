@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { ArrowLeftRight, Check, Copy, ExternalLink } from 'lucide-react';
-import { BRAND_COLORS, PROFILE } from '../data/portfolioData';
+import { BRAND_COLORS, NETWORK_BRAND_COLORS, PROFILE } from '../data/portfolioData';
+import { useTheme } from '../context/ThemeContext';
+import { NetworkCoreMiniMark } from './NetworkCoreEmblem';
 
 export const TkjIdentityCard: React.FC = () => {
+  const { isNetworkMode } = useTheme();
   const [showBack, setShowBack] = useState(false);
   const [copied, setCopied] = useState(false);
   const shouldReduceMotion = Boolean(useReducedMotion());
+  const palette = isNetworkMode ? NETWORK_BRAND_COLORS : BRAND_COLORS;
 
   const handleCopyEmail = async () => {
     try {
@@ -33,39 +37,77 @@ export const TkjIdentityCard: React.FC = () => {
           ? { duration: 0 }
           : { duration: 0.95, ease: [0.16, 1, 0.3, 1] }
       }
-      className="relative overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--action)]/45 hover:shadow-md"
+      className="theme-surface-transition relative overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--action)]/45 hover:shadow-md"
     >
       {/* Header kartu identitas pelajar TKJ */}
-      <div className="border-b border-[var(--line)] bg-[var(--surface-elevated)] px-5 pb-3.5 pt-4">
+      <div className="theme-surface-transition border-b border-[var(--line)] bg-[var(--surface-elevated)] px-5 pb-3.5 pt-4">
         <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-[var(--line)]" aria-hidden="true" />
         <div className="flex items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2 font-bold text-[var(--text)]">
-            <svg aria-hidden="true" viewBox="0 0 28 16" className="h-3.5 w-6 shrink-0" fill="none">
-              <path
-                d="M9 2L3 8L9 14"
-                stroke="#4285f4"
-                strokeWidth="2.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M19 2L25 8L19 14"
-                stroke="#34a853"
-                strokeWidth="2.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <span aria-hidden="true" className="relative grid h-4 w-6 shrink-0 place-items-center">
+              <AnimatePresence mode="wait" initial={false}>
+                {isNetworkMode ? (
+                  <motion.span
+                    key="network-mini-mark"
+                    initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.85 }}
+                    transition={
+                      shouldReduceMotion
+                        ? { duration: 0 }
+                        : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
+                    }
+                    className="grid place-items-center"
+                  >
+                    <NetworkCoreMiniMark className="h-4 w-5 shrink-0" />
+                  </motion.span>
+                ) : (
+                  <motion.svg
+                    key="gdg-mini-mark"
+                    initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.85 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.85 }}
+                    transition={
+                      shouldReduceMotion
+                        ? { duration: 0 }
+                        : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
+                    }
+                    viewBox="0 0 28 16"
+                    className="h-3.5 w-6 shrink-0"
+                    fill="none"
+                  >
+                    <path
+                      d="M9 2L3 8L9 14"
+                      stroke={palette[0]}
+                      strokeWidth="2.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M19 2L25 8L19 14"
+                      stroke={palette[2]}
+                      strokeWidth="2.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </motion.svg>
+                )}
+              </AnimatePresence>
+            </span>
             <span>{PROFILE.school} · TKJ</span>
           </div>
           <span className="font-mono text-[11px] font-semibold text-[var(--muted)]">TKJ PASS</span>
         </div>
       </div>
 
-      {/* Garis aksen 4 warna */}
+      {/* Garis aksen 4 segmen */}
       <div aria-hidden="true" className="flex h-[3px] w-full">
-        {BRAND_COLORS.map((color) => (
-          <div key={color} className="flex-1" style={{ backgroundColor: color }} />
+        {palette.map((color, idx) => (
+          <div
+            key={`${idx}-${color}`}
+            className="flex-1 transition-colors duration-300"
+            style={{ backgroundColor: color }}
+          />
         ))}
       </div>
 

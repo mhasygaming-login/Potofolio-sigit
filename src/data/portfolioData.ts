@@ -14,6 +14,64 @@ export const BRAND_COLORS = [
   ACCENT_HEX_MAP.green,
 ] as const;
 
+export const NETWORK_BRAND_COLORS = [
+  '#37DFFF',
+  '#2685FF',
+  '#36D982',
+  '#37DFFF',
+] as const;
+
+export type NetworkDeviceId = 'client' | 'switch' | 'router' | 'server';
+
+export interface NetworkDeviceSpec {
+  id: NetworkDeviceId;
+  label: string;
+  role: string;
+  ipAddress: string;
+  protocolNote: string;
+  description: string;
+  accentHex: string;
+}
+
+export const NETWORK_DEVICES: NetworkDeviceSpec[] = [
+  {
+    id: 'client',
+    label: 'Client',
+    role: 'End Device / Browser',
+    ipAddress: '192.168.10.24',
+    protocolNote: 'DHCP · HTTP/HTTPS Request',
+    description: 'Perangkat yang meminta layanan atau resource dari server.',
+    accentHex: '#37DFFF',
+  },
+  {
+    id: 'switch',
+    label: 'Switch',
+    role: 'Layer 2 Distribution',
+    ipAddress: 'VLAN 10 · Access',
+    protocolNote: 'MAC Address Table · Switching',
+    description: 'Menghubungkan perangkat dalam jaringan lokal menggunakan MAC Address.',
+    accentHex: '#2685FF',
+  },
+  {
+    id: 'router',
+    label: 'Router',
+    role: 'MikroTik / Gateway L3',
+    ipAddress: '192.168.10.1',
+    protocolNote: 'Routing · NAT · Firewall',
+    description: 'Menghubungkan beberapa jaringan dan menentukan jalur pengiriman paket data.',
+    accentHex: '#37DFFF',
+  },
+  {
+    id: 'server',
+    label: 'Server',
+    role: 'Linux Debian 12 Host',
+    ipAddress: '10.20.30.10',
+    protocolNote: 'Nginx · DNS · SSH Service',
+    description: 'Menyediakan layanan, data, atau resource untuk perangkat client.',
+    accentHex: '#36D982',
+  },
+];
+
 export interface LightboxMedia {
   title: string;
   caption: string;

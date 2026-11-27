@@ -6,13 +6,16 @@ import {
   Copy,
   ExternalLink,
   FolderKanban,
+  Globe,
   Layers,
   Mail,
+  Network,
   Search,
   User,
   X,
 } from 'lucide-react';
-import { PROFILE, PROJECTS } from '../data/portfolioData';
+import { BRAND_COLORS, NETWORK_BRAND_COLORS, PROFILE, PROJECTS } from '../data/portfolioData';
+import { useTheme } from '../context/ThemeContext';
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -41,10 +44,12 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onOpenCiscoCertificate,
   onOpenCertificate,
 }) => {
+  const { isNetworkMode, toggleMode, playTone } = useTheme();
   const [query, setQuery] = useState('');
   const [activeIdx, setActiveIdx] = useState(0);
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const topPalette = isNetworkMode ? NETWORK_BRAND_COLORS : BRAND_COLORS;
 
   const items = useMemo<CommandItem[]>(() => {
     const sectionItems: CommandItem[] = [
@@ -137,6 +142,21 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
 
     const quickActions: CommandItem[] = [
       {
+        id: 'act-toggle-mode',
+        group: 'Aksi Cepat',
+        label: isNetworkMode
+          ? 'Beralih ke GDG Bogor Mode'
+          : 'Beralih ke Network Mode (Living Network)',
+        hint: isNetworkMode ? 'GDG Bogor' : 'Network',
+        keywords: 'mode theme tema gdg bogor network living jaringan dark light',
+        icon: isNetworkMode ? Globe : Network,
+        action: () => {
+          toggleMode();
+          playTone('switch');
+          onClose();
+        },
+      },
+      {
         id: 'act-copy-email',
         group: 'Aksi Cepat',
         label: copied ? 'Email tersalin ke clipboard' : `Salin Email (${PROFILE.email})`,
@@ -195,7 +215,17 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     ];
 
     return [...sectionItems, ...projectItems, ...quickActions];
-  }, [copied, onClose, onNavigateSection, onOpenCertificate, onOpenCiscoCertificate, onOpenProject]);
+  }, [
+    copied,
+    isNetworkMode,
+    onClose,
+    onNavigateSection,
+    onOpenCertificate,
+    onOpenCiscoCertificate,
+    onOpenProject,
+    playTone,
+    toggleMode,
+  ]);
 
   const filteredItems = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -265,12 +295,11 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-xl overflow-hidden rounded-3xl border border-[var(--line)] bg-[var(--surface-elevated)] shadow-2xl"
       >
-        {/* 4-color Google thin top edge */}
+        {/* Top accent strip matching active mode */}
         <div aria-hidden="true" className="flex h-[3px] w-full">
-          <div className="flex-1 bg-[#4285f4]" />
-          <div className="flex-1 bg-[#ea4335]" />
-          <div className="flex-1 bg-[#fbbc04]" />
-          <div className="flex-1 bg-[#34a853]" />
+          {topPalette.map((color, idx) => (
+            <div key={`${idx}-${color}`} className="flex-1" style={{ backgroundColor: color }} />
+          ))}
         </div>
 
         {/* Search Input */}

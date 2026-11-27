@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { ArrowRight, Command, Network } from 'lucide-react';
-import { BRAND_COLORS, PROFILE } from '../data/portfolioData';
+import { BRAND_COLORS, NETWORK_BRAND_COLORS, PROFILE } from '../data/portfolioData';
+import { useTheme } from '../context/ThemeContext';
+import { NetworkTopologyPanel } from './NetworkTopologyPanel';
+import { NetworkCoreEmblem } from './NetworkCoreEmblem';
 
 interface HeroProps {
   onExploreProjects: () => void;
@@ -30,6 +33,8 @@ export const Hero: React.FC<HeroProps> = ({
   onContact,
   onOpenCommandPalette,
 }) => {
+  const { isNetworkMode } = useTheme();
+  const activePalette = isNetworkMode ? NETWORK_BRAND_COLORS : BRAND_COLORS;
   const shouldReduceMotion = Boolean(useReducedMotion());
   const [rotorIdx, setRotorIdx] = useState(0);
   const [photoLoaded, setPhotoLoaded] = useState(false);
@@ -68,7 +73,14 @@ export const Hero: React.FC<HeroProps> = ({
   }, [shouldReduceMotion]);
 
   const handleHeroPointerMove = (e: React.PointerEvent<HTMLElement>) => {
-    if (shouldReduceMotion || e.pointerType !== 'mouse' || !heroRef.current) return;
+    if (
+      shouldReduceMotion ||
+      e.pointerType !== 'mouse' ||
+      window.innerWidth < 768 ||
+      !heroRef.current
+    ) {
+      return;
+    }
     const rect = heroRef.current.getBoundingClientRect();
     const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
     const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
@@ -92,7 +104,7 @@ export const Hero: React.FC<HeroProps> = ({
         y: baseY,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        color: BRAND_COLORS[idx % BRAND_COLORS.length],
+        color: activePalette[idx % activePalette.length],
         rotation: Math.random() * 360,
         shape: idx % 3,
       };
@@ -228,7 +240,7 @@ export const Hero: React.FC<HeroProps> = ({
                 }
                 className="font-mono text-[var(--text)]"
                 style={{
-                  borderBottom: `2px solid ${BRAND_COLORS[rotorIdx % BRAND_COLORS.length]}`,
+                  borderBottom: `2px solid ${activePalette[rotorIdx % activePalette.length]}`,
                 }}
               >
                 {PROFILE.focusLines[rotorIdx]}
@@ -304,9 +316,9 @@ export const Hero: React.FC<HeroProps> = ({
                 <svg viewBox="0 0 100 100" className="h-full w-full">
                   <path
                     d="M50 6C54 34 66 46 94 50 66 54 54 66 50 94 46 66 34 54 6 50 34 46 46 34 50 6Z"
-                    fill="#fbbc04"
+                    fill={isNetworkMode ? '#37DFFF' : '#fbbc04'}
                     paintOrder="stroke"
-                    stroke="#fff"
+                    stroke={isNetworkMode ? '#0B1728' : '#fff'}
                     strokeLinejoin="round"
                     strokeWidth="10"
                   />
@@ -337,9 +349,9 @@ export const Hero: React.FC<HeroProps> = ({
                     cx="50"
                     cy="50"
                     r="42"
-                    fill="#4285f4"
+                    fill={isNetworkMode ? '#2685FF' : '#4285f4'}
                     paintOrder="stroke"
-                    stroke="#fff"
+                    stroke={isNetworkMode ? '#0B1728' : '#fff'}
                     strokeWidth="10"
                   />
                   <path
@@ -359,9 +371,17 @@ export const Hero: React.FC<HeroProps> = ({
               animate={{ opacity: 1, y: 0, rotate: -5 }}
               transition={fadeUpTransition(2)}
               style={{ transformOrigin: '50% 0%' }}
-              className="pointer-events-none absolute -bottom-5 -left-2 z-20 w-[164px] overflow-hidden rounded-2xl bg-white text-[#202124] shadow-lg ring-1 ring-black/10 sm:w-[178px]"
+              className={`theme-surface-transition pointer-events-none absolute -bottom-5 -left-2 z-20 w-[164px] overflow-hidden rounded-2xl shadow-lg ring-1 sm:w-[178px] ${
+                isNetworkMode
+                  ? 'bg-[#0B1728] text-[#EAF4FF] ring-[#37DFFF]/30'
+                  : 'bg-white text-[#202124] ring-black/10'
+              }`}
             >
-              <div className="relative bg-[#1a73e8] px-3 pb-2.5 pt-5 text-center text-xs font-bold leading-tight text-white">
+              <div
+                className={`relative px-3 pb-2.5 pt-5 text-center text-xs font-bold leading-tight text-white ${
+                  isNetworkMode ? 'bg-[#102238] border-b border-[#37DFFF]/25' : 'bg-[#1a73e8]'
+                }`}
+              >
                 <span className="absolute left-1/2 top-2 h-1.5 w-8 -translate-x-1/2 rounded-full bg-black/25" />
                 {PROFILE.school}
               </div>
@@ -371,68 +391,87 @@ export const Hero: React.FC<HeroProps> = ({
                   <br />
                   Nasution
                 </p>
-                <p className="mt-1.5 text-[11px] font-medium leading-snug text-[#5f6368]">
+                <p
+                  className={`mt-1.5 text-[11px] font-medium leading-snug ${
+                    isNetworkMode ? 'text-[#9BAFC4]' : 'text-[#5f6368]'
+                  }`}
+                >
                   Teknik Komputer &amp; Jaringan
                 </p>
                 <div aria-hidden="true" className="mt-2.5 flex gap-1.5">
-                  {BRAND_COLORS.map((c) => (
-                    <span key={c} className="h-2 w-2 rounded-full" style={{ backgroundColor: c }} />
+                  {activePalette.map((c, idx) => (
+                    <span
+                      key={`${idx}-${c}`}
+                      className="h-2 w-2 rounded-full transition-colors duration-300"
+                      style={{ backgroundColor: c }}
+                    />
                   ))}
                 </div>
               </div>
             </motion.div>
 
-            {/* Four-Color < > Chevron Brackets — step 1 (70ms): fade-in & subtle scale */}
-            <motion.svg
-              aria-hidden="true"
-              initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={fadeUpTransition(1)}
-              onClick={triggerConfetti}
-              viewBox="0 0 400 400"
-              className="absolute inset-0 z-10 h-full w-full cursor-pointer overflow-visible"
-            >
-              <path
-                d="M70 70 L10 200"
-                stroke="#4285f4"
-                strokeWidth="20"
-                strokeLinecap="round"
-                fill="none"
-                style={{
-                  transform: `translate(${pointerOffset.x * 14}px, ${pointerOffset.y * 14}px)`,
-                }}
-              />
-              <path
-                d="M10 200 L70 330"
-                stroke="#ea4335"
-                strokeWidth="20"
-                strokeLinecap="round"
-                fill="none"
-                style={{
-                  transform: `translate(${pointerOffset.x * 14}px, ${pointerOffset.y * 14}px)`,
-                }}
-              />
-              <path
-                d="M330 70 L390 200"
-                stroke="#fbbc04"
-                strokeWidth="20"
-                strokeLinecap="round"
-                fill="none"
-                style={{
-                  transform: `translate(${pointerOffset.x * 8}px, ${pointerOffset.y * 8}px)`,
-                }}
-              />
-              <path
-                d="M390 200 L330 330"
-                stroke="#34a853"
-                strokeWidth="20"
-                strokeLinecap="round"
-                fill="none"
-                style={{
-                  transform: `translate(${pointerOffset.x * 8}px, ${pointerOffset.y * 8}px)`,
-                }}
-              />
-            </motion.svg>
+            {/* Decorative Emblem: GDG Bogor < > Chevrons vs Network Mode Network Core */}
+            <AnimatePresence mode="wait" initial={false}>
+              {isNetworkMode ? (
+                <NetworkCoreEmblem
+                  key="network-core-emblem"
+                  className="absolute -left-3 top-[15%] z-20 h-[68px] w-[68px] sm:-left-2 sm:h-[76px] sm:w-[76px]"
+                />
+              ) : (
+                <motion.svg
+                  key="gdg-chevron-emblem"
+                  aria-hidden="true"
+                  initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.96 }}
+                  transition={fadeUpTransition(1)}
+                  onClick={triggerConfetti}
+                  viewBox="0 0 400 400"
+                  className="absolute inset-0 z-10 h-full w-full cursor-pointer overflow-visible"
+                >
+                  <path
+                    d="M70 70 L10 200"
+                    stroke={activePalette[0]}
+                    strokeWidth="20"
+                    strokeLinecap="round"
+                    fill="none"
+                    style={{
+                      transform: `translate(${pointerOffset.x * 14}px, ${pointerOffset.y * 14}px)`,
+                    }}
+                  />
+                  <path
+                    d="M10 200 L70 330"
+                    stroke={activePalette[1]}
+                    strokeWidth="20"
+                    strokeLinecap="round"
+                    fill="none"
+                    style={{
+                      transform: `translate(${pointerOffset.x * 14}px, ${pointerOffset.y * 14}px)`,
+                    }}
+                  />
+                  <path
+                    d="M330 70 L390 200"
+                    stroke={activePalette[2]}
+                    strokeWidth="20"
+                    strokeLinecap="round"
+                    fill="none"
+                    style={{
+                      transform: `translate(${pointerOffset.x * 8}px, ${pointerOffset.y * 8}px)`,
+                    }}
+                  />
+                  <path
+                    d="M390 200 L330 330"
+                    stroke={activePalette[3]}
+                    strokeWidth="20"
+                    strokeLinecap="round"
+                    fill="none"
+                    style={{
+                      transform: `translate(${pointerOffset.x * 8}px, ${pointerOffset.y * 8}px)`,
+                    }}
+                  />
+                </motion.svg>
+              )}
+            </AnimatePresence>
 
             {/* Portrait Container — step 0 (0ms): enters immediately in parallel with left column */}
             <motion.div
@@ -442,7 +481,9 @@ export const Hero: React.FC<HeroProps> = ({
               className="absolute inset-[6%_20%]"
             >
               <div
-                className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[28px] border border-[var(--line)] bg-[var(--surface)]"
+                className={`theme-surface-transition relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[28px] border border-[var(--line)] bg-[var(--surface)] ${
+                  isNetworkMode ? 'shadow-[0_0_32px_var(--network-glow)]' : ''
+                }`}
                 style={{
                   transform: shouldReduceMotion
                     ? undefined
@@ -480,6 +521,13 @@ export const Hero: React.FC<HeroProps> = ({
             </motion.div>
           </div>
         </div>
+      </div>
+
+      {/* Interactive Client -> Switch -> Router -> Server Topology in Network Mode */}
+      <div className="mx-auto w-[min(1120px,calc(100%-32px))]">
+        <AnimatePresence>
+          {isNetworkMode && <NetworkTopologyPanel key="network-topology-panel" />}
+        </AnimatePresence>
       </div>
     </section>
   );

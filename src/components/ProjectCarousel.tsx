@@ -14,10 +14,19 @@ import {
 import { ArrowRight, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import {
   ACCENT_HEX_MAP,
+  AccentColor,
   ProjectItem,
   ProjectScreenshot,
   tokenizeTechLabel,
 } from '../data/portfolioData';
+import { useTheme } from '../context/ThemeContext';
+
+const NETWORK_ACCENT_HEX_MAP: Record<AccentColor, string> = {
+  blue: '#2685FF',
+  red: '#37DFFF',
+  yellow: '#36D982',
+  green: '#36D982',
+};
 
 interface ProjectCarouselProps {
   projects: ProjectItem[];
@@ -109,6 +118,8 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
   onOpenDetail,
   onPreviewScreenshot,
 }) => {
+  const { isNetworkMode } = useTheme();
+  const accentMap = isNetworkMode ? NETWORK_ACCENT_HEX_MAP : ACCENT_HEX_MAP;
   const regionRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const [viewportWidth, setViewportWidth] = useState(0);
@@ -294,14 +305,14 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
               }
               transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
               style={{ width: viewportWidth > 0 ? viewportWidth : '100%' }}
-              className="shrink-0 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-5 transition-[border-color,box-shadow] duration-200 hover:border-[var(--action)]/45 hover:shadow-md sm:p-7"
+              className="theme-surface-transition shrink-0 rounded-3xl border border-[var(--line)] bg-[var(--surface)]/95 p-5 transition-[border-color,box-shadow] duration-200 hover:border-[var(--action)]/45 hover:shadow-md sm:p-7"
             >
               {/* Ringkasan Singkat & Aksi */}
               <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
                 <div className="max-w-[58ch]">
                   <div
-                    className="mb-3 h-1 w-12 rounded-full"
-                    style={{ backgroundColor: ACCENT_HEX_MAP[project.accent] }}
+                    className="mb-3 h-1 w-12 rounded-full transition-colors duration-300"
+                    style={{ backgroundColor: accentMap[project.accent] }}
                   />
 
                   <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-[var(--muted)]">
@@ -432,8 +443,8 @@ export const ProjectCarousel: React.FC<ProjectCarouselProps> = ({
                           ? { duration: 0 }
                           : { duration: 0.3, ease: [0.05, 0.7, 0.1, 1] }
                       }
-                      className="absolute inset-0 origin-left"
-                      style={{ backgroundColor: ACCENT_HEX_MAP[p.accent] }}
+                      className="absolute inset-0 origin-left transition-colors duration-300"
+                      style={{ backgroundColor: accentMap[p.accent] }}
                     />
                   </span>
                 </button>

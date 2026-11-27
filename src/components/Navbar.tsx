@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { User, Layers, FolderKanban, Award, Mail } from 'lucide-react';
+import { ModeSwitcher } from './ModeSwitcher';
 
 interface NavbarProps {
   isDetailView: boolean;
@@ -63,8 +64,8 @@ export const Navbar: React.FC<NavbarProps> = ({ isDetailView, onNavigateHome }) 
 
   return (
     <>
-      <header className="sticky top-0 z-30 border-b border-[var(--line)] bg-[var(--bg)]/95 pt-[3px] backdrop-blur-md">
-        <div className="mx-auto flex h-16 w-[min(1120px,calc(100%-32px))] items-center justify-between gap-8">
+      <header className="theme-surface-transition sticky top-0 z-30 border-b border-[var(--line)] bg-[var(--bg)]/95 pt-[3px] backdrop-blur-md">
+        <div className="mx-auto flex h-16 w-[min(1120px,calc(100%-32px))] items-center justify-between gap-4 lg:gap-8">
           {/* Zone 1: Brand Title */}
           <a
             href="#atas"
@@ -75,7 +76,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isDetailView, onNavigateHome }) 
           </a>
 
           {/* Zone 2: 5 concise single-line nav links (desktop) */}
-          <nav aria-label="Navigasi utama" className="hidden items-center gap-6 md:flex">
+          <nav aria-label="Navigasi utama" className="hidden items-center gap-4 md:flex lg:gap-6">
             {NAV_ITEMS.map((item) => {
               const isCurrent = activeSection === item.id;
               return (
@@ -96,8 +97,12 @@ export const Navbar: React.FC<NavbarProps> = ({ isDetailView, onNavigateHome }) 
             })}
           </nav>
 
-          {/* Zone 3: 1 primary CTA */}
-          <div className="flex shrink-0 items-center">
+          {/* Zone 3: Mode Switcher (desktop) + Primary CTA */}
+          <div className="flex shrink-0 items-center gap-2.5">
+            <div className="hidden md:block">
+              <ModeSwitcher variant="desktop" />
+            </div>
+
             <a
               href="#kontak"
               onClick={(e) => handleLinkClick(e, 'kontak')}
@@ -112,7 +117,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isDetailView, onNavigateHome }) 
       {/* Mobile compact bottom navigation (<= 15% viewport height) */}
       <nav
         aria-label="Navigasi mobile"
-        className="fixed bottom-0 left-0 right-0 z-30 flex border-t border-[var(--line)] bg-[var(--bg)]/95 px-1 py-1.5 backdrop-blur-md md:hidden"
+        className="theme-surface-transition fixed bottom-0 left-0 right-0 z-30 flex items-center border-t border-[var(--line)] bg-[var(--bg)]/95 px-1 py-1.5 backdrop-blur-md md:hidden"
       >
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon;
@@ -132,6 +137,8 @@ export const Navbar: React.FC<NavbarProps> = ({ isDetailView, onNavigateHome }) 
             </a>
           );
         })}
+
+        <ModeSwitcher variant="mobile" />
       </nav>
     </>
   );

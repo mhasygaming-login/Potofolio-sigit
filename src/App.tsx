@@ -18,8 +18,11 @@ import { HomeSections } from './components/HomeSections';
 import { ProjectDetailPage } from './components/ProjectDetailPage';
 import { CommandPalette } from './components/CommandPalette';
 import { MediaLightbox } from './components/MediaLightbox';
+import { NetworkBackground } from './components/NetworkBackground';
+import { useTheme } from './context/ThemeContext';
 
 export default function App() {
+  const { mode } = useTheme();
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [projectFilter, setProjectFilter] = useState<'utama' | 'semua' | 'eksperimen'>('utama');
   const [techFilter, setTechFilter] = useState<TechFilterState | null>(null);
@@ -34,6 +37,14 @@ export default function App() {
     projectFilter,
     techFilterKey: techFilter ? `${techFilter.excludeSlug}:${techFilter.tech}` : null,
   });
+
+  // Refresh ScrollTrigger measurements when mode toggles (e.g. topology panel height)
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      refreshScrollTriggers();
+    }, 120);
+    return () => window.clearTimeout(timer);
+  }, [mode, refreshScrollTriggers]);
 
   // Pastikan setiap refresh halaman dimulai dari atas serta dukung tombol Back/Forward browser
   useEffect(() => {
@@ -120,9 +131,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] pb-16 text-[var(--text)] md:pb-0">
-      <ScrollProgressBar />
-      <Navbar isDetailView={Boolean(activeProject)} onNavigateHome={navigateHome} />
+    <div className="theme-surface-transition relative min-h-screen bg-[var(--bg)] pb-16 text-[var(--text)] md:pb-0">
+      <NetworkBackground isDetailView={Boolean(activeProject)} />
+
+      <div className="relative z-10">
+        <ScrollProgressBar />
+        <Navbar isDetailView={Boolean(activeProject)} onNavigateHome={navigateHome} />
 
       {activeProject ? (
         <ProjectDetailPage
@@ -199,6 +213,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }

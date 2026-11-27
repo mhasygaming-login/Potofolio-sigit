@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import {
   ACCENT_HEX_MAP,
+  AccentColor,
   ACHIEVEMENT,
   CISCO_CERTIFICATE,
   LightboxMedia,
@@ -23,9 +24,17 @@ import {
   TechFilterState,
   TOOLS_AND_PLATFORMS,
 } from '../data/portfolioData';
+import { useTheme } from '../context/ThemeContext';
 import { SectionHeading } from './SectionHeading';
 import { TkjIdentityCard } from './TkjIdentityCard';
 import { ProjectCarousel } from './ProjectCarousel';
+
+const NETWORK_ACCENT_HEX_MAP: Record<AccentColor, string> = {
+  blue: '#2685FF',
+  red: '#37DFFF',
+  yellow: '#36D982',
+  green: '#36D982',
+};
 
 interface HomeSectionsProps {
   projectFilter: 'utama' | 'semua' | 'eksperimen';
@@ -48,8 +57,10 @@ export const HomeSections: React.FC<HomeSectionsProps> = ({
   onOpenProjectDetail,
   onOpenLightbox,
 }) => {
+  const { isNetworkMode } = useTheme();
   const [copiedEmail, setCopiedEmail] = useState(false);
   const shouldReduceMotion = Boolean(useReducedMotion());
+  const accentMap = isNetworkMode ? NETWORK_ACCENT_HEX_MAP : ACCENT_HEX_MAP;
 
   const handleCopyEmail = async () => {
     try {
@@ -66,7 +77,7 @@ export const HomeSections: React.FC<HomeSectionsProps> = ({
       {/* TENTANG SAYA */}
       <section id="tentang" className="border-t border-[var(--line)] py-16 sm:py-24">
         <div className="mx-auto w-[min(1120px,calc(100%-32px))]">
-          <SectionHeading title="Tentang saya" color={ACCENT_HEX_MAP.blue} />
+          <SectionHeading title="Tentang saya" color={accentMap.blue} sectionKey="tentang" />
 
           <div className="mt-8 grid grid-cols-1 items-start gap-8 md:grid-cols-12 md:gap-12">
             <div className="md:col-span-5">
@@ -93,7 +104,7 @@ export const HomeSections: React.FC<HomeSectionsProps> = ({
       {/* KEAHLIAN & TOOLS */}
       <section id="skill" className="border-t border-[var(--line)] py-16 sm:py-24">
         <div className="mx-auto w-[min(1120px,calc(100%-32px))]">
-          <SectionHeading title="Keahlian" color={ACCENT_HEX_MAP.red} />
+          <SectionHeading title="Keahlian" color={accentMap.red} sectionKey="keahlian" />
 
           <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
             {SKILL_GROUPS.map((group, idx) => {
@@ -120,12 +131,12 @@ export const HomeSections: React.FC<HomeSectionsProps> = ({
                       ? { duration: 0 }
                       : { duration: 0.95, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }
                   }
-                  className="relative overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6 transition-[border-color,background-color,box-shadow] duration-200 hover:border-[var(--action)]/60 hover:shadow-md"
+                  className="theme-surface-transition relative overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--surface)]/95 p-6 transition-[border-color,background-color,box-shadow] duration-200 hover:border-[var(--action)]/60 hover:shadow-md"
                 >
                   <div
                     aria-hidden="true"
-                    className="absolute left-0 right-0 top-0 h-[3px]"
-                    style={{ backgroundColor: ACCENT_HEX_MAP[group.accent] }}
+                    className="absolute left-0 right-0 top-0 h-[3px] transition-colors duration-300"
+                    style={{ backgroundColor: accentMap[group.accent] }}
                   />
 
                   <div className="flex items-center justify-between gap-2">
@@ -184,7 +195,11 @@ export const HomeSections: React.FC<HomeSectionsProps> = ({
         <div className="mx-auto w-[min(1120px,calc(100%-32px))]">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <SectionHeading title="Project & Studi Kasus" color={ACCENT_HEX_MAP.yellow} />
+              <SectionHeading
+                title="Project & Studi Kasus"
+                color={accentMap.yellow}
+                sectionKey="project"
+              />
               <p data-gsap-fade className="max-w-[54ch] text-sm text-[var(--muted)] sm:text-base">
                 Kumpulan website latihan yang saya rancang terlebih dahulu di Figma lalu saya bangun
                 sebagai sarana belajar di luar materi jaringan.
@@ -301,7 +316,11 @@ export const HomeSections: React.FC<HomeSectionsProps> = ({
       {/* PENCAPAIAN & SERTIFIKAT */}
       <section id="pencapaian" className="border-t border-[var(--line)] py-16 sm:py-24">
         <div className="mx-auto w-[min(1120px,calc(100%-32px))]">
-          <SectionHeading title="Pencapaian & Sertifikat" color={ACCENT_HEX_MAP.green} />
+          <SectionHeading
+            title="Pencapaian & Sertifikat"
+            color={accentMap.green}
+            sectionKey="pencapaian"
+          />
 
           <div className="mt-8 space-y-6">
             {/* 1. Cisco Networking Academy — Networking Basics */}
@@ -513,7 +532,7 @@ export const HomeSections: React.FC<HomeSectionsProps> = ({
         />
         <div className="mx-auto grid w-[min(1120px,calc(100%-32px))] grid-cols-1 gap-10 md:grid-cols-12">
           <div className="md:col-span-5">
-            <SectionHeading title="Mari terhubung" color={ACCENT_HEX_MAP.blue} />
+            <SectionHeading title="Mari terhubung" color={accentMap.blue} sectionKey="kontak" />
             <p
               data-gsap-fade
               className="max-w-[44ch] text-sm leading-relaxed text-[var(--muted)] sm:text-base"

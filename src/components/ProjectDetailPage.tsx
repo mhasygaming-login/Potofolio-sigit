@@ -13,12 +13,21 @@ import {
 } from 'lucide-react';
 import {
   ACCENT_HEX_MAP,
+  AccentColor,
   ProjectItem,
   PROJECTS,
   projectMatchesTechnology,
   ProjectScreenshot,
 } from '../data/portfolioData';
+import { useTheme } from '../context/ThemeContext';
 import { ProjectVisualPreview } from './ProjectVisualPreview';
+
+const NETWORK_ACCENT_HEX_MAP: Record<AccentColor, string> = {
+  blue: '#2685FF',
+  red: '#37DFFF',
+  yellow: '#36D982',
+  green: '#36D982',
+};
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,6 +46,8 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   onSelectTechnology,
   onPreviewScreenshot,
 }) => {
+  const { isNetworkMode } = useTheme();
+  const accentMap = isNetworkMode ? NETWORK_ACCENT_HEX_MAP : ACCENT_HEX_MAP;
   const headingRef = useRef<HTMLHeadingElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = Boolean(useReducedMotion());
@@ -113,8 +124,8 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
       {/* Header & Unboxed Metadata */}
       <header className="mt-8">
         <div
-          className="mb-4 h-1 w-16 rounded-full"
-          style={{ backgroundColor: ACCENT_HEX_MAP[project.accent] }}
+          className="mb-4 h-1 w-16 rounded-full transition-colors duration-300"
+          style={{ backgroundColor: accentMap[project.accent] }}
         />
 
         <div className="flex flex-wrap items-center gap-2 text-sm text-[var(--muted)]">

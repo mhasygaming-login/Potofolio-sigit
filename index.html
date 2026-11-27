@@ -70,6 +70,22 @@
       })();
     </script>
 
+    <!-- Pre-paint mode initialization (prevents theme flash on reload) -->
+    <script>
+      (function () {
+        try {
+          var savedMode = window.localStorage.getItem('sigit-portfolio-mode');
+          var mode = savedMode === 'network' ? 'network' : 'gdg';
+          document.documentElement.setAttribute('data-theme-mode', mode);
+          if (mode === 'network') {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme-mode', 'gdg');
+        }
+      })();
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

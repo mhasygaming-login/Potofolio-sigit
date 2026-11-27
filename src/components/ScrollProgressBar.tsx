@@ -1,13 +1,17 @@
 import React from 'react';
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
-import { BRAND_COLORS } from '../data/portfolioData';
+import { BRAND_COLORS, NETWORK_BRAND_COLORS } from '../data/portfolioData';
+import { useTheme } from '../context/ThemeContext';
 
-const GOOGLE_SEGMENTS = BRAND_COLORS.map((color, idx) => ({
-  color,
-  range: [idx * 0.25, (idx + 1) * 0.25] as [number, number],
-}));
+const SEGMENT_RANGES: [number, number][] = [
+  [0, 0.25],
+  [0.25, 0.5],
+  [0.5, 0.75],
+  [0.75, 1],
+];
 
 export const ScrollProgressBar: React.FC = () => {
+  const { isNetworkMode } = useTheme();
   const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, {
@@ -17,31 +21,32 @@ export const ScrollProgressBar: React.FC = () => {
   });
 
   const activeProgress = shouldReduceMotion ? scrollYProgress : smoothProgress;
+  const palette = isNetworkMode ? NETWORK_BRAND_COLORS : BRAND_COLORS;
 
-  const blueScale = useTransform(activeProgress, GOOGLE_SEGMENTS[0].range, [0, 1], { clamp: true });
-  const redScale = useTransform(activeProgress, GOOGLE_SEGMENTS[1].range, [0, 1], { clamp: true });
-  const yellowScale = useTransform(activeProgress, GOOGLE_SEGMENTS[2].range, [0, 1], { clamp: true });
-  const greenScale = useTransform(activeProgress, GOOGLE_SEGMENTS[3].range, [0, 1], { clamp: true });
+  const seg0 = useTransform(activeProgress, SEGMENT_RANGES[0], [0, 1], { clamp: true });
+  const seg1 = useTransform(activeProgress, SEGMENT_RANGES[1], [0, 1], { clamp: true });
+  const seg2 = useTransform(activeProgress, SEGMENT_RANGES[2], [0, 1], { clamp: true });
+  const seg3 = useTransform(activeProgress, SEGMENT_RANGES[3], [0, 1], { clamp: true });
 
-  const segmentScales = [blueScale, redScale, yellowScale, greenScale];
+  const segmentScales = [seg0, seg1, seg2, seg3];
 
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none fixed left-0 right-0 top-0 z-[60] grid h-[3px] grid-cols-4 overflow-hidden bg-[var(--line)]/40"
     >
-      {GOOGLE_SEGMENTS.map((segment, idx) => (
-        <div key={segment.color} className="relative h-full w-full overflow-hidden">
+      {palette.map((color, idx) => (
+        <div key={`${idx}-${color}`} className="relative h-full w-full overflow-hidden">
           {/* Jejak warna samar saat diam di atas */}
           <div
-            className="absolute inset-0 opacity-20"
-            style={{ backgroundColor: segment.color }}
+            className="absolute inset-0 opacity-20 transition-colors duration-300"
+            style={{ backgroundColor: color }}
           />
           {/* Segmen aktif terisi berurutan satu per satu dari kiri ke kanan */}
           <motion.div
-            className="relative h-full w-full origin-left will-change-transform"
+            className="relative h-full w-full origin-left will-change-transform transition-colors duration-300"
             style={{
-              backgroundColor: segment.color,
+              backgroundColor: color,
               scaleX: segmentScales[idx],
             }}
           />
