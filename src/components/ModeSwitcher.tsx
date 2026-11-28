@@ -33,7 +33,7 @@ const MODE_OPTIONS: ModeOption[] = [
 ];
 
 export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ variant = 'desktop' }) => {
-  const { mode, setMode, playTone } = useTheme();
+  const { mode, setMode } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -69,8 +69,9 @@ export const ModeSwitcher: React.FC<ModeSwitcherProps> = ({ variant = 'desktop' 
   }, [isOpen]);
 
   const handleSelectMode = (nextMode: PortfolioMode) => {
-    setMode(nextMode);
-    playTone('switch');
+    if (nextMode !== mode) {
+      setMode(nextMode);
+    }
     setIsOpen(false);
   };
 

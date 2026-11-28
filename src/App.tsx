@@ -19,6 +19,8 @@ import { ProjectDetailPage } from './components/ProjectDetailPage';
 import { CommandPalette } from './components/CommandPalette';
 import { MediaLightbox } from './components/MediaLightbox';
 import { NetworkBackground } from './components/NetworkBackground';
+import { GdgCinematicTransition } from './components/GdgCinematicTransition';
+import { NetworkCinematicTransition } from './components/NetworkCinematicTransition';
 import { useTheme } from './context/ThemeContext';
 
 export default function App() {
@@ -133,6 +135,8 @@ export default function App() {
   return (
     <div className="theme-surface-transition relative min-h-screen bg-[var(--bg)] pb-16 text-[var(--text)] md:pb-0">
       <NetworkBackground isDetailView={Boolean(activeProject)} />
+      <GdgCinematicTransition />
+      <NetworkCinematicTransition />
 
       <div className="relative z-10">
         <ScrollProgressBar />

@@ -8,10 +8,15 @@ import React, {
   useState,
 } from 'react';
 import { useReducedMotion } from 'motion/react';
+import {
+  playModeTransitionMusic,
+  stopModeTransitionMusic,
+} from '../utils/modeMusicPlayer';
 
 export type PortfolioMode = 'gdg' | 'network';
 
 const STORAGE_KEY = 'sigit-portfolio-mode';
+const SOUND_STORAGE_KEY = 'sigit-portfolio-sound';
 
 type ToneKind = 'switch' | 'node' | 'terminal';
 
@@ -20,6 +25,11 @@ interface ThemeContextValue {
   isNetworkMode: boolean;
   setMode: (nextMode: PortfolioMode) => void;
   toggleMode: () => void;
+  gdgTransitionId: number;
+  triggerGdgTransition: () => void;
+  dismissGdgTransition: () => void;
+  networkTransitionId: number;
+  dismissNetworkTransition: () => void;
   soundEnabled: boolean;
   setSoundEnabled: (enabled: boolean) => void;
   playTone: (kind?: ToneKind) => void;
@@ -43,11 +53,37 @@ function readInitialMode(): PortfolioMode {
   return 'gdg';
 }
 
+function readInitialSoundEnabled(): boolean {
+  if (typeof window !== 'undefined') {
+    try {
+      return window.localStorage.getItem(SOUND_STORAGE_KEY) === 'true';
+    } catch {
+      // Ignore storage access restriction
+    }
+  }
+  return false;
+}
+
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mode, setModeState] = useState<PortfolioMode>(readInitialMode);
-  const [soundEnabled, setSoundEnabled] = useState(false);
+  const [gdgTransitionId, setGdgTransitionId] = useState(0);
+  const [networkTransitionId, setNetworkTransitionId] = useState(0);
+  const [soundEnabled, setSoundEnabledState] = useState<boolean>(readInitialSoundEnabled);
   const shouldReduceMotion = Boolean(useReducedMotion());
   const audioCtxRef = useRef<AudioContext | null>(null);
+  const modeRef = useRef<PortfolioMode>(mode);
+
+  useEffect(() => {
+    modeRef.current = mode;
+  }, [mode]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(SOUND_STORAGE_KEY, String(soundEnabled));
+    } catch {
+      // Ignore storage write restriction
+    }
+  }, [soundEnabled]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -68,6 +104,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     return () => {
+      stopModeTransitionMusic();
       if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
         void audioCtxRef.current.close().catch(() => {});
       }
@@ -118,13 +155,47 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     [shouldReduceMotion, soundEnabled]
   );
 
-  const setMode = useCallback((nextMode: PortfolioMode) => {
-    setModeState(nextMode);
+  const setSoundEnabled = useCallback((enabled: boolean) => {
+    setSoundEnabledState(enabled);
   }, []);
 
-  const toggleMode = useCallback(() => {
-    setModeState((prev) => (prev === 'gdg' ? 'network' : 'gdg'));
+  const triggerGdgTransition = useCallback(() => {
+    if (shouldReduceMotion) return;
+    setGdgTransitionId((prev) => prev + 1);
+  }, [shouldReduceMotion]);
+
+  const dismissGdgTransition = useCallback(() => {
+    setGdgTransitionId(0);
   }, []);
+
+  const dismissNetworkTransition = useCallback(() => {
+    setNetworkTransitionId(0);
+  }, []);
+
+  const setMode = useCallback(
+    (nextMode: PortfolioMode) => {
+      if (nextMode === modeRef.current) return;
+      modeRef.current = nextMode;
+      setModeState(nextMode);
+      playModeTransitionMusic(nextMode);
+
+      if (nextMode === 'gdg') {
+        setNetworkTransitionId(0);
+        if (!shouldReduceMotion) {
+          setGdgTransitionId((id) => id + 1);
+        }
+      } else {
+        setGdgTransitionId(0);
+        setNetworkTransitionId((id) => id + 1);
+      }
+    },
+    [shouldReduceMotion]
+  );
+
+  const toggleMode = useCallback(() => {
+    const next: PortfolioMode = modeRef.current === 'gdg' ? 'network' : 'gdg';
+    setMode(next);
+  }, [setMode]);
 
   const value = useMemo<ThemeContextValue>(
     () => ({
@@ -132,11 +203,27 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       isNetworkMode: mode === 'network',
       setMode,
       toggleMode,
+      gdgTransitionId,
+      triggerGdgTransition,
+      dismissGdgTransition,
+      networkTransitionId,
+      dismissNetworkTransition,
       soundEnabled,
       setSoundEnabled,
       playTone,
     }),
-    [mode, playTone, setMode, soundEnabled, toggleMode]
+    [
+      dismissGdgTransition,
+      dismissNetworkTransition,
+      gdgTransitionId,
+      mode,
+      networkTransitionId,
+      playTone,
+      setMode,
+      soundEnabled,
+      toggleMode,
+      triggerGdgTransition,
+    ]
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;

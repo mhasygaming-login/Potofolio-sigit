@@ -44,7 +44,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onOpenCiscoCertificate,
   onOpenCertificate,
 }) => {
-  const { isNetworkMode, toggleMode, playTone } = useTheme();
+  const { isNetworkMode, toggleMode } = useTheme();
   const [query, setQuery] = useState('');
   const [activeIdx, setActiveIdx] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -152,7 +152,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         icon: isNetworkMode ? Globe : Network,
         action: () => {
           toggleMode();
-          playTone('switch');
           onClose();
         },
       },
@@ -223,7 +222,6 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     onOpenCertificate,
     onOpenCiscoCertificate,
     onOpenProject,
-    playTone,
     toggleMode,
   ]);
 
